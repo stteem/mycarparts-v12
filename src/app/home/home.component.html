@@ -1,0 +1,48 @@
+<div class="container"
+  fxLayout="row"
+  fxLayout.sm="column"
+  fxLayout.xs="column"
+  fxLayoutAlign.gt-md="space-around center"
+  fxLayoutAlign.md="space-around center"
+  fxLayoutGap="10px" 
+  fxLayoutGap.xs="0">
+
+  <form id="searchform" novalidate #searchForm="ngForm" (ngSubmit)="onSubmit()">
+
+    <h3 style="text-align: center;">Compare Spare Parts Prices in Nigeria</h3>
+
+      <p fxLayout="row" fxLayoutGap="7px" >
+        <mat-form-field class="form-width" appearance="fill">
+          <mat-label>Vehicle Type</mat-label>
+          <input matInput type="text" [(ngModel)]="search.vehicletype" name="vehicletype" required>
+        </mat-form-field>
+        <mat-form-field class="form-width" appearance="fill">
+          <mat-label>Model</mat-label>
+          <input matInput type="text" [(ngModel)]="search.model" name="model" required>
+        </mat-form-field>
+      </p>
+      <p fxLayout="row" fxLayoutGap="7px">
+        <mat-form-field class="form-width" appearance="fill">
+          <mat-label>Year</mat-label>
+          <input matInput type="text" [(ngModel)]="search.year" name="year" required>
+        </mat-form-field>
+        <mat-form-field class="form-width" appearance="fill">
+          <mat-label>Part</mat-label>
+          <input matInput type="text" [(ngModel)]="search.part" name="part" required>
+        </mat-form-field>
+      </p>
+      <p fxLayout="row" fxLayoutGap="7px">
+        <mat-form-field class="form-width" appearance="fill">
+          <mat-label>State</mat-label>
+          <input matInput type="text" [(ngModel)]="search.state" name="state" required>
+        </mat-form-field>
+        <mat-form-field class="form-width" appearance="fill">
+          <mat-label>City</mat-label>
+          <input matInput type="text" [(ngModel)]="search.city" name="city" required>
+        </mat-form-field>
+      </p>
+      
+      <button type="submit" mat-button class="background-primary text-floral-white" [disabled]="searchForm.form.invalid" >Search</button>
+  </form>
+  
+</div>

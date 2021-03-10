@@ -1,0 +1,46 @@
+
+<div class="example-container" [class.example-is-mobile]="mobileQuery.matches">
+  <mat-toolbar color="primary" class="example-toolbar">
+    <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
+    <h1 class="example-app-name">My Car Parts</h1>
+    <span class="flex-spacer"></span>
+
+    <div *ngIf="socialuser.image">
+        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+          <img class="avatar" src={{socialuser.image}} alt="image">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item>
+            <mat-icon>logout</mat-icon>
+            <span>Log out</span>
+          </button>
+        </mat-menu>
+    </div>
+    <div [hidden]="socialuser.image">
+    <a mat-icon-button (click)="openLoginForm()"><mat-icon>account_circle</mat-icon></a>
+    </div>
+  </mat-toolbar>
+
+  <mat-sidenav-container class="example-sidenav-container"
+                         [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
+    <mat-sidenav class="navbackground" #snav [mode]="mobileQuery.matches ? 'over' : 'side'"
+                 [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
+      <mat-nav-list>
+        <a mat-list-item routerLink="/home" routerLinkActive="active" ><mat-icon>home</mat-icon> Home</a>
+        <a mat-list-item routerLink="." ><mat-icon>dashboard</mat-icon>  Dashboard</a>
+        <a mat-list-item routerLink="/createshop" routerLinkActive="active" ><mat-icon>shop</mat-icon>  Create Shop</a>
+        <a mat-list-item routerLink="." ><mat-icon>account_circle</mat-icon>  Profile</a>
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>
+
+
+<!-- Copyright 2020 Google LLC. All Rights Reserved.
+    Use of this source code is governed by an MIT-style license that
+    can be found in the LICENSE file at http://angular.io/license -->

@@ -1,0 +1,38 @@
+<mat-toolbar class="tbar" color="primary">
+  Login
+<span class="flex-spacer"></span>
+<a mat-button mat-dialog-close>&times;</a>
+</mat-toolbar>
+
+<form class="loginform" novalidate #loginForm="ngForm" (ngSubmit)="onSubmit()">
+
+<mat-dialog-content>
+  <p>
+    <mat-form-field>
+      <input matInput placeholder="Email" type="email" [(ngModel)]="user.email" email name="email" #email="ngModel" required>
+      <mat-error *ngIf="email.errors?.required">Email is required</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Password" type="password" [(ngModel)]="user.password" name="password" #password="ngModel" required>
+      <mat-error *ngIf="password.errors?.required">Password is required</mat-error>
+    </mat-form-field>
+    <mat-checkbox [(ngModel)]="user.remember" name="remember">Remember Me</mat-checkbox>
+  </p>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button type="submit" mat-button class="background-primary text-floral-white" [disabled]="loginForm.form.invalid">Login</button>
+</mat-dialog-actions>
+<div class="or">
+<p style="text-align: center;">Or</p>
+</div>
+<div  
+      fxLayout="row" 
+      fxLayout.xs="column"
+      fxLayoutAlign.gt-md="space-around center"
+      fxLayoutAlign.md="space-around center"
+>
+  <button mat-button (click)="socialSignIn('google')"><mat-icon>google</mat-icon>Login with Google</button>
+  <button mat-button (click)="socialSignIn('facebook')"><mat-icon>facebook</mat-icon>Login with Facebook</button>
+</div>
+</form>
