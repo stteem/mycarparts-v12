@@ -1,0 +1,18 @@
+.signupform > p > mat-form-field {
+    width: 100%;
+}
+
+.signup-btn {
+    width: 50%;
+}
+
+@media(min-width: 900px){
+    .signupform {
+        width: 40%;
+    }
+
+    .signup-btn {
+        width: 40%;
+    }
+}
+

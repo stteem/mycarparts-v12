@@ -1,0 +1,36 @@
+.full-width {
+    width: 100%;
+}
+
+.half-width {
+    width: 100%;
+    margin: 7px;
+}
+
+.form-size {
+    width: 100%;
+}
+
+@media (min-width: 700px){
+    .full-width {
+        width: 50%;
+    }
+    
+    .half-width {
+        width: 50%;
+        margin: 5px;
+    }
+    
+    .form-size {
+        width: 75%;
+    }
+}
+
+.createshop-btn{
+     //#a02905;
+    width: 50%;
+    color: #ffff;
+    font-size: 1.1em;
+}
+
+

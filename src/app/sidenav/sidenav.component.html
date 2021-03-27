@@ -5,20 +5,23 @@
     <h1 class="example-app-name">My Car Parts</h1>
     <span class="flex-spacer"></span>
 
-    <div *ngIf="socialuser.image">
+    <div *ngIf="socialuser.image || username" style="margin-right: 20px;">
         <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
-          <img class="avatar" src={{socialuser.image}} alt="image">
+          <a *ngIf="username">{{username}}</a>
+            <img *ngIf="socialuser.image" class="avatar" src={{socialuser.image}} alt="image">
           <mat-icon>more_vert</mat-icon>
         </button>
         <mat-menu #menu="matMenu">
-          <button mat-menu-item>
+          <button mat-menu-item (click)="logOut()">
             <mat-icon>logout</mat-icon>
             <span>Log out</span>
           </button>
         </mat-menu>
     </div>
-    <div [hidden]="socialuser.image">
-    <a mat-icon-button (click)="openLoginForm()"><mat-icon>account_circle</mat-icon></a>
+    
+    <div class="signup" [hidden]="socialuser.image || username">
+      <a mat-button routerLink="/signup" routerLinkActive="active">Sign up</a>
+      <a mat-button (click)="openLoginForm()">Sign in</a>
     </div>
   </mat-toolbar>
 
@@ -26,7 +29,7 @@
                          [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
     <mat-sidenav class="navbackground" #snav [mode]="mobileQuery.matches ? 'over' : 'side'"
                  [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
-      <mat-nav-list>
+      <mat-nav-list (click)="snav.toggle()">
         <a mat-list-item routerLink="/home" routerLinkActive="active" ><mat-icon>home</mat-icon> Home</a>
         <a mat-list-item routerLink="." ><mat-icon>dashboard</mat-icon>  Dashboard</a>
         <a mat-list-item routerLink="/createshop" routerLinkActive="active" ><mat-icon>shop</mat-icon>  Create Shop</a>

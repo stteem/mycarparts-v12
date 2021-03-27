@@ -1,8 +1,9 @@
 import {MediaMatcher} from '@angular/cdk/layout';
-import {ChangeDetectorRef, Component, OnDestroy} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit, AfterViewInit, OnDestroy} from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { LoginComponent } from '../login/login.component';
-import { DataService } from "../services/data.service";
+import { LoginService } from "../services/login.service";
+import { AuthenticationService } from '../services/auth.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -10,10 +11,11 @@ import { Subscription } from 'rxjs';
   templateUrl: './sidenav.component.html',
   styleUrls: ['./sidenav.component.scss'],
 })
-export class SidenavComponent implements OnDestroy {
+export class SidenavComponent implements OnInit, AfterViewInit, OnDestroy {
   mobileQuery: MediaQueryList;
-  socialuser: object;
+  socialuser: Object;
   subscription: Subscription;
+  username: String;
     
   private _mobileQueryListener: () => void;
 
@@ -21,16 +23,26 @@ export class SidenavComponent implements OnDestroy {
     changeDetectorRef: ChangeDetectorRef, 
     media: MediaMatcher,
     public dialog: MatDialog,
-    private dataservice: DataService) {
+    private loginservice: LoginService,
+    private authService: AuthenticationService) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
-    this.socialuser = this.dataservice.currentMessage;
+    this.socialuser = this.loginservice.currentMessage;
   }
 
   ngOnInit() {
-    this.subscription = this.dataservice.currentMessage.subscribe(user => this.socialuser = user)
-    console.log('sidenav user ', this.socialuser);
+    this.subscription = this.loginservice.currentMessage.subscribe(user => this.socialuser = user);
+    console.log('sidenav social user ', this.socialuser);
+    this.authService.loadUserCredentials();
+    Promise.resolve().then(() => {
+      this.subscription = this.authService.getUsername()
+        .subscribe(name => { console.log(name); this.username = name; });
+    });
+  }
+
+  ngAfterViewInit() {
+    
   }
 
   ngOnDestroy(): void {
@@ -38,8 +50,17 @@ export class SidenavComponent implements OnDestroy {
     this.subscription.unsubscribe();
   }
 
+  logOut() {
+    this.authService.logOut();
+  }
+
   openLoginForm() {
-  	this.dialog.open(LoginComponent, {width: '500px', height: '550px'})
+  	this.dialog.open(LoginComponent, {width: '400px', height: '600px'});
+
+    /*loginRef.afterClosed()
+        .subscribe(result => {
+          console.log(result);
+        });*/
   }
 
 }

@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef} from '@angular/material';
 import { AuthService, FacebookLoginProvider, GoogleLoginProvider } from 'angular-6-social-login';
-import { DataService } from '../services/data.service';
+import { LoginService } from '../services/login.service';
+import { Router } from '@angular/router';
+import { AuthenticationService } from '../services/auth.service';
+
+
 
 
 
@@ -13,15 +17,17 @@ import { DataService } from '../services/data.service';
 })
 export class LoginComponent implements OnInit {
 
-  user = {email: '', password: '', remember: false};
-  socialuser = {name: '', email: '', image: ''};
-
-
+  user = {email: '', password: ''};
+  socialuser = {name: '', email: '', image: '', token: ''};
+  hide = true;
+  loginErrMess: string;
 
   constructor(
     public dialogRef: MatDialogRef<LoginComponent>,
-    private dataservice: DataService,
-    private socialAuthService: AuthService
+    private loginservice: LoginService,
+    private socialAuthService: AuthService,
+    private router: Router,
+    private authService: AuthenticationService
     ) { }
 
     public socialSignIn(socialPlatform : string) {
@@ -34,24 +40,41 @@ export class LoginComponent implements OnInit {
       
       this.socialAuthService.signIn(socialPlatformProvider).then(
         (userData) => {
-          console.log(socialPlatform +" sign in data : " , userData);
+          //console.log(socialPlatform +" sign in data : " , userData);
           // Now sign-in with userData
           this.socialuser.name = userData.name;
           this.socialuser.email = userData.email;
           this.socialuser.image = userData.image;
-          console.log('social user sign in data : ' , this.socialuser); 
-          this.dataservice.changeMessage(this.socialuser);
+          this.socialuser.token = userData.idToken;
+          //console.log('social user sign in data : ' , this.socialuser); 
+          this.loginservice.loginSocialUser(this.socialuser);
+          this.dialogRef.close();
         }
       );
     }
 
   ngOnInit() {
-    
+  }
+
+  dialogClose() {
+    this.dialogRef.close();
   }
 
   onSubmit() {
     console.log('User: ', this.user);
-    this.dialogRef.close();
+    this.authService.logIn(this.user)
+    .subscribe(res => {
+      if (res.success) {
+        this.dialogRef.close(res.success);
+        this.router.navigateByUrl('/');
+      } else {
+        console.log(res);
+      }
+    },
+    error => {
+      console.log(error);
+      this.loginErrMess = error;
+    });    
   }
 
 

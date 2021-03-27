@@ -1,0 +1,79 @@
+<div class="container"
+  fxLayout="column"
+  fxLayoutGap="10px">
+
+  <div fxFlex>
+    <div>
+        <h3>Sign Up</h3>
+        <hr>
+    </div>
+  </div>
+		
+
+  <form class="signupform"  novalidate [formGroup]="signupForm" #signupform="ngForm" *ngIf="showForm" (ngSubmit)="onSubmit()" >
+      <p>
+      <mat-form-field>
+        <input matInput formControlName="firstname" placeholder="First Name" type="text" required>
+        <mat-error *ngIf="formErrors.firstname">{{formErrors.firstname}}</mat-error>
+      </mat-form-field>
+    </p>
+    <p>
+    <mat-form-field>
+      <input matInput formControlName="lastname" placeholder="Last Name" type="text" required>
+      <mat-error *ngIf="formErrors.lastname">{{formErrors.lastname}}</mat-error>
+    </mat-form-field>
+    </p>
+
+    <p> 
+    <mat-form-field>
+      <input matInput formControlName="email" autocomplete="username" id="email" name="email" 
+      placeholder="Email" type="email" email required>
+      <mat-error *ngIf="formErrors.email">{{formErrors.email}}</mat-error>
+    </mat-form-field>
+    </p>
+    <p>
+      <mat-form-field>
+        <input matInput formControlName="telnum" placeholder="Phone Number" type="tel" pattern="[0-9+]*" required>
+        <mat-error *ngIf="formErrors.telnum">{{formErrors.telnum}}</mat-error>
+      </mat-form-field>
+    </p>
+
+    <p>
+      <mat-form-field>
+        <input matInput placeholder="Password" autocomplete="new-password" id="newpassword" 
+        [type]="hide ? 'password' : 'text'" formControlName="password" required>
+        <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+
+        <mat-error *ngIf="formErrors.password">{{formErrors.password}}</mat-error> 
+      </mat-form-field>
+    </p>
+      
+    <div *ngIf="signupForm.invalid">
+      <button type="submit" [disabled]="signupForm.invalid" mat-button class='signup-btn disable-color text-floral-white'>Sign Up</button>
+    </div>
+    <div [hidden]="signupForm.invalid">
+      <button type="submit" mat-button class='signup-btn enable-color text-floral-white'>Sign Up</button>
+    </div>
+    <div class="or">
+      <p style="text-align: center;">Or</p>
+    </div>
+      
+    <p>
+      <button mat-button class="social-butn social-butn-g text-floral-white" type="button" (click)="socialSignIn('google')"><span class="fa fa-google fa-lg" aria-hidden="true"></span> Continue with Google</button>
+    </p>
+    <p>
+      <button mat-button class="social-butn social-butn-f text-floral-white" type="button" (click)="socialSignIn('facebook')"><span class="fa fa-facebook fa-lg" aria-hidden="true"></span> Continue with Facebook</button>
+    </p>
+  </form>
+  <div [hidden]="showForm || response || signupErrMess">
+    <h4>Submitting form... please wait</h4>
+    <mat-spinner style="font-size: 12px;"></mat-spinner>
+  </div>
+  <div *ngIf="response">
+      <p>{{response.message}}, {{response.firstname}} {{response.lastname}}</p>
+  </div>
+  <div *ngIf="signupErrMess">
+    <p>Sorry, something went wrong, try again!</p>
+</div>
+  
+</div>

@@ -13,7 +13,8 @@
 }
 
 .tbar {
-    height: 40px;
+    height: 60px;
+    background-color: #8c0000;
 }
 
 .loginform {
@@ -24,3 +25,12 @@
     margin-top: 50px;
     margin-bottom: 20px;
 }
+
+mat-dialog-content > p mat-form-field {
+  width: 100%;
+}
+
+.login-butn {
+  background-color: #bd2000;
+}
+

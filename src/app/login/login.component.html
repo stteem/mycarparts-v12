@@ -1,7 +1,7 @@
 <mat-toolbar class="tbar" color="primary">
   Login
 <span class="flex-spacer"></span>
-<a mat-button mat-dialog-close>&times;</a>
+<a mat-button (click)="dialogClose()">&times;</a>
 </mat-toolbar>
 
 <form class="loginform" novalidate #loginForm="ngForm" (ngSubmit)="onSubmit()">
@@ -9,30 +9,39 @@
 <mat-dialog-content>
   <p>
     <mat-form-field>
-      <input matInput placeholder="Email" type="email" [(ngModel)]="user.email" email name="email" #email="ngModel" required>
+      <input matInput placeholder="Email" type="email" [(ngModel)]="user.email" 
+       autocomplete="email" email name="email" #email="ngModel" required>
       <mat-error *ngIf="email.errors?.required">Email is required</mat-error>
+      <mat-error *ngIf="email.errors?.email">Email is invalid</mat-error>
     </mat-form-field>
+  </p>
+  <p>
     <mat-form-field>
-      <input matInput placeholder="Password" type="password" [(ngModel)]="user.password" name="password" #password="ngModel" required>
+      <input matInput placeholder="Password" [type]="hide ? 'password' : 'text'" [(ngModel)]="user.password" 
+       minlength="6" autocomplete="current-password" id="current-password" name="current-password"
+       #password="ngModel" aria-label="password" aria-describedby="password-constraints" required>
+       <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
       <mat-error *ngIf="password.errors?.required">Password is required</mat-error>
+      <mat-error *ngIf="password.errors?.minlength">Minimum 6 characters required</mat-error>
     </mat-form-field>
-    <mat-checkbox [(ngModel)]="user.remember" name="remember">Remember Me</mat-checkbox>
+  </p>
+  <p>
+    <a style="text-decoration: none;font-size: 13px;" href="#">Forgot Password?</a>
   </p>
 </mat-dialog-content>
 <mat-dialog-actions>
   <button mat-button mat-dialog-close>Cancel</button>
-  <button type="submit" mat-button class="background-primary text-floral-white" [disabled]="loginForm.form.invalid">Login</button>
+  <button type="submit" mat-button class="login-butn text-floral-white" [disabled]="loginForm.form.invalid">Login</button>
 </mat-dialog-actions>
 <div class="or">
 <p style="text-align: center;">Or</p>
 </div>
-<div  
-      fxLayout="row" 
-      fxLayout.xs="column"
-      fxLayoutAlign.gt-md="space-around center"
-      fxLayoutAlign.md="space-around center"
->
-  <button mat-button (click)="socialSignIn('google')"><mat-icon>google</mat-icon>Login with Google</button>
-  <button mat-button (click)="socialSignIn('facebook')"><mat-icon>facebook</mat-icon>Login with Facebook</button>
-</div>
+
+<p>
+  <button mat-button class="social-butn text-floral-white" type="button" (click)="socialSignIn('google')"><span class="fa fa-google fa-lg" aria-hidden="true"></span> Login with Google</button>
+</p>
+<p>
+  <button mat-button class="social-butn text-floral-white" type="button" (click)="socialSignIn('facebook')"><span class="fa fa-facebook fa-lg" aria-hidden="true"></span> Login with Facebook</button>
+</p>
+
 </form>

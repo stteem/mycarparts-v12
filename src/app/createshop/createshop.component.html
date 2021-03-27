@@ -1,3 +1,63 @@
-<p>
-  createshop works!
-</p>
+<div class="container"
+  fxLayout="column"
+  fxLayoutGap="10px">
+
+  <div fxFlex>
+    <div>
+        <h3>Create Shop</h3>
+        <hr>
+    </div>
+  </div>
+
+  	
+
+  	<div fxFlex fxFlexOffset="20px" class="form-size">
+	    <div *ngIf="createshop && spin">
+	    	<p matLine><span>Your shop {{shop.name}} has been created, go ahead and list your auto parts
+           and expose your business to millions of drivers and car owners.</span></p>
+		  </div>
+		
+
+	    <form novalidate [formGroup]="createshopForm" #csform="ngForm" [hidden]="hideForm" (ngSubmit)="onSubmit()" >
+	      	<p>
+	        <mat-form-field class="half-width">
+	          <input matInput formControlName="shopname" placeholder="Shop Name" type="text" required>
+	          <mat-error *ngIf="formErrors.shopname">{{formErrors.shopname}}</mat-error>
+	        </mat-form-field>
+	        <mat-form-field class="half-width">
+	          <input matInput formControlName="address" placeholder="Address" type="text" required>
+	          <mat-error *ngIf="formErrors.address">{{formErrors.address}}</mat-error>
+	        </mat-form-field>
+	      	</p>
+	      	<p>
+	        <mat-form-field class="half-width">
+	          <input matInput formControlName="telnum" placeholder="Tel. Number" type="tel" pattern="[+0-9]*" required>
+	          <mat-error *ngIf="formErrors.telnum">{{formErrors.telnum}}</mat-error>
+	        </mat-form-field>
+	        <mat-form-field class="half-width">
+	          <input matInput formControlName="email" placeholder="Email" type="email" email required>
+	          <mat-error *ngIf="formErrors.email">{{formErrors.email}}</mat-error>
+	        </mat-form-field>
+	      	</p>
+	     	 <p>
+	        <mat-form-field class="full-width">
+	          <textarea matInput formControlName="description" placeholder="Description" rows=5></textarea>
+	        </mat-form-field>
+	      	</p>
+			<div *ngIf="createshopForm.invalid">
+				<button type="submit" [disabled]="createshopForm.invalid" mat-button class='createshop-btn disable-color text-floral-white'>Create Shop</button>
+			</div>
+			<div [hidden]="createshopForm.invalid">
+				<button type="submit" mat-button class='createshop-btn enable-color text-floral-white'>Create Shop</button>
+			</div>
+	      	
+	    </form>
+	</div>
+	<div fxFlex [hidden]="spin">
+		    <mat-spinner></mat-spinner><h4>Creating shop . . . Please Wait</h4>
+		 </div>
+	    <div fxFlex *ngIf="createshopErrMess">
+		  	<h2>Error</h2>
+		  	<h4>{{createshopErrMess}}</h4>
+		</div>
+</div>
