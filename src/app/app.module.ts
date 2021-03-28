@@ -12,6 +12,8 @@ import { LoginComponent } from './login/login.component';
 import { CreateshopService } from './services/createshop.service';
 import { SignupService } from './services/signup.service';
 import { LoginService } from './services/login.service';
+import { AuthGuardService } from './services/auth-guard.service';
+import { SignupGuardService } from './services/signup-guard.service';
 
 import { HttpClientModule } from '@angular/common/http';
 import { getAuthServiceConfigs } from './auth-service.config';
@@ -33,6 +35,8 @@ import {
 import 'hammerjs';
 import { CreateshopComponent } from './createshop/createshop.component';
 import { SignupComponent } from './signup/signup.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { ProfileComponent } from './profile/profile.component';
 
 
 
@@ -43,7 +47,9 @@ import { SignupComponent } from './signup/signup.component';
     HomeComponent,
     LoginComponent,
     CreateshopComponent,
-    SignupComponent
+    SignupComponent,
+    DashboardComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -59,6 +65,8 @@ import { SignupComponent } from './signup/signup.component';
     LoginService,
     SignupService,
     AuthenticationService,
+    AuthGuardService,
+    SignupGuardService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

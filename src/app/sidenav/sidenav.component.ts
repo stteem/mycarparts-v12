@@ -20,11 +20,13 @@ export class SidenavComponent implements OnInit, AfterViewInit, OnDestroy {
   private _mobileQueryListener: () => void;
 
   constructor(
-    changeDetectorRef: ChangeDetectorRef, 
-    media: MediaMatcher,
-    public dialog: MatDialog,
-    private loginservice: LoginService,
-    private authService: AuthenticationService) {
+      changeDetectorRef: ChangeDetectorRef, 
+      media: MediaMatcher,
+      public dialog: MatDialog,
+      private loginservice: LoginService,
+      private authService: AuthenticationService
+  ) 
+  {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
@@ -34,8 +36,10 @@ export class SidenavComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit() {
     this.subscription = this.loginservice.currentMessage.subscribe(user => this.socialuser = user);
     console.log('sidenav social user ', this.socialuser);
-    this.authService.loadUserCredentials();
     Promise.resolve().then(() => {
+      this.authService.loadUserCredentials();
+    })
+    .then(() => {
       this.subscription = this.authService.getUsername()
         .subscribe(name => { console.log(name); this.username = name; });
     });
@@ -56,11 +60,6 @@ export class SidenavComponent implements OnInit, AfterViewInit, OnDestroy {
 
   openLoginForm() {
   	this.dialog.open(LoginComponent, {width: '400px', height: '600px'});
-
-    /*loginRef.afterClosed()
-        .subscribe(result => {
-          console.log(result);
-        });*/
   }
 
 }

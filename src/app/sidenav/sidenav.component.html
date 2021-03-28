@@ -19,8 +19,8 @@
         </mat-menu>
     </div>
     
-    <div class="signup" [hidden]="socialuser.image || username">
-      <a mat-button routerLink="/signup" routerLinkActive="active">Sign up</a>
+    <div class="signin" [hidden]="socialuser.image || username">
+      <a routerLink="/signup" routerLinkActive="active">Sign up</a>
       <a mat-button (click)="openLoginForm()">Sign in</a>
     </div>
   </mat-toolbar>
@@ -31,9 +31,9 @@
                  [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
       <mat-nav-list (click)="snav.toggle()">
         <a mat-list-item routerLink="/home" routerLinkActive="active" ><mat-icon>home</mat-icon> Home</a>
-        <a mat-list-item routerLink="." ><mat-icon>dashboard</mat-icon>  Dashboard</a>
+        <a mat-list-item routerLink="/dashboard" ><mat-icon>dashboard</mat-icon>  Dashboard</a>
         <a mat-list-item routerLink="/createshop" routerLinkActive="active" ><mat-icon>shop</mat-icon>  Create Shop</a>
-        <a mat-list-item routerLink="." ><mat-icon>account_circle</mat-icon>  Profile</a>
+        <a mat-list-item routerLink="/profile" ><mat-icon>account_circle</mat-icon>  Profile</a>
       </mat-nav-list>
     </mat-sidenav>
 

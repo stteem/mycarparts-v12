@@ -9,7 +9,6 @@ import { AuthenticationService } from '../services/auth.service';
 
 
 
-
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -18,7 +17,7 @@ import { AuthenticationService } from '../services/auth.service';
 export class LoginComponent implements OnInit {
 
   user = {email: '', password: ''};
-  socialuser = {name: '', email: '', image: '', token: ''};
+  socialuser = {token: ''};
   hide = true;
   loginErrMess: string;
 
@@ -42,9 +41,9 @@ export class LoginComponent implements OnInit {
         (userData) => {
           //console.log(socialPlatform +" sign in data : " , userData);
           // Now sign-in with userData
-          this.socialuser.name = userData.name;
-          this.socialuser.email = userData.email;
-          this.socialuser.image = userData.image;
+          //this.socialuser.name = userData.name;
+          //this.socialuser.email = userData.email;
+          //this.socialuser.image = userData.image;
           this.socialuser.token = userData.idToken;
           //console.log('social user sign in data : ' , this.socialuser); 
           this.loginservice.loginSocialUser(this.socialuser);
@@ -52,6 +51,7 @@ export class LoginComponent implements OnInit {
         }
       );
     }
+
 
   ngOnInit() {
   }
@@ -69,6 +69,7 @@ export class LoginComponent implements OnInit {
         this.router.navigateByUrl('/');
       } else {
         console.log(res);
+        //this.loginErrMess = res.errMsg;
       }
     },
     error => {

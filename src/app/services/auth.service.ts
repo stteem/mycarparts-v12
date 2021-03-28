@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, Subject } from 'rxjs';
+import { of, Observable, Subject } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
 import { baseURL } from '../shared/baseurl';
@@ -88,9 +88,14 @@ export class AuthenticationService {
   logIn(user: any): Observable<any> {
     return this.http.post<AuthResponse>(baseURL + 'api/v1/auth/logincustom', user)
       .pipe( map(res => {
+        console.log('pipe res ',res);
           this.storeUserCredentials({username: res.firstname, token: res.token});
           return {'success': true, 'username': res.firstname };
       }),
+       /*catchError(error => {
+        console.error("error caught", error);
+          return of({errMsg: error.error.status});
+       })*/
        catchError(error => this.processHTTPMsgService.handleError(error)));
   }
 

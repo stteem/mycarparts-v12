@@ -50,10 +50,10 @@
   object-fit: cover;
 }
 
-.signin {
-  margin-right: 25px;
-}
-.signup {
-  margin-right: 40px;
+.signin > a {
+  margin: 2px;
+  text-decoration: none;
+  color: whitesmoke;
+  font-size: 13px;
 }
   

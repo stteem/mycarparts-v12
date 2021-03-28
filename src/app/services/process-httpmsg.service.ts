@@ -16,7 +16,10 @@ export class ProcessHttpmsgService {
     if (error.error instanceof ErrorEvent) {
       errMsg = error.error.message;
     } else {
-      errMsg = `${error.status} - ${error.statusText || ''} ${error.error}`;
+      //errMsg = `${error.status} - ${error.statusText || ''} ${error.error}`;
+      console.log('error ', error);
+      errMsg = error.error.status;
+      
     }
 
     return throwError(errMsg);
