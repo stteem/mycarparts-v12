@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { of, Observable, Subject } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 import { baseURL } from '../shared/baseurl';
 import { ProcessHttpmsgService } from './process-httpmsg.service';
@@ -29,7 +30,8 @@ export class AuthenticationService {
   authToken: string = undefined;
 
   constructor(private http: HttpClient,
-    private processHTTPMsgService: ProcessHttpmsgService) { }
+    private processHTTPMsgService: ProcessHttpmsgService,
+    private router: Router) { }
 
   checkJWTtoken() {
     this.http.get<JWTResponse>(baseURL + 'api/v1/auth/checkJWTtoken')
@@ -101,6 +103,7 @@ export class AuthenticationService {
 
   logOut() {
     this.destroyUserCredentials();
+    return this.router.navigateByUrl('/');
   }
 
   isLoggedIn(): Boolean {

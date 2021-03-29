@@ -15,13 +15,13 @@ export class CreateshopService {
   constructor(private http: HttpClient,
   	private ProcessHttpmsgService: ProcessHttpmsgService) { }
 
-    submitShop(createshop: Createshop): Observable<Createshop> {
+    createShop(createshop: Createshop): Observable<Createshop> {
       const httpOptions = {
         headers: new HttpHeaders({
           'Content-Type': 'application/json'
         })
       };
-      return this.http.post<Createshop>(baseURL + 'createshop', createshop, httpOptions)
+      return this.http.post<Createshop>(baseURL + 'api/v1/shop', createshop, httpOptions)
       .pipe(catchError(this.ProcessHttpmsgService.handleError));
     }
 }

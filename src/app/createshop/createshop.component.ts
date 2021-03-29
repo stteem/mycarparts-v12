@@ -3,6 +3,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Createshop } from '../shared/createshop';
 import { CreateshopService } from '../services/createshop.service';
+import { Router } from '@angular/router';
+
+
+import NaijaStates from 'naija-state-local-government';
+
 
 //import { visibility } from '../animations/app.animation';
 //import { flyInOut, expand } from '../animations/app.animation';
@@ -16,15 +21,19 @@ export class CreateshopComponent implements OnInit {
 
   createshopForm: FormGroup;
   createshop: Createshop;
-  hideForm: boolean;
+  showForm = true;
   createshopErrMess: string;
-  spin: boolean;
+  states = NaijaStates.states();
+  lgas: String[] = [];
+  response = null;
 
   @ViewChild('csform') createshopFormDirective;
 
 
   formErrors = {
     'shopname': '',
+    'state': '',
+    'lga': '',
     'address': '',
     'telnum': '',
     'email': ''
@@ -35,6 +44,12 @@ export class CreateshopComponent implements OnInit {
       'required':      'Shop name is required.',
       'minlength':     'Shop name must be at least 2 characters long.',
       'maxlength':     'Shop name cannot be more than 25 characters long.'
+    },
+    'state': {
+      'required':      'State is required.'
+    },
+    'lga': {
+      'required':      'L.G.A. is required.'
     },
     'address': {
       'required':      'Address is required.',
@@ -52,28 +67,32 @@ export class CreateshopComponent implements OnInit {
   };
 
   constructor(private fb: FormBuilder,
-    private createshopservice: CreateshopService) { 
+    private createshopservice: CreateshopService,
+    private router: Router) { 
       this.createForm();
     }
 
   ngOnInit() {
-    this.spin = true;
-    this.hideForm = false;
+  }
+
+  onChangeState(val: any) {
+    this.lgas = [];
+    let lgArray = NaijaStates.lgas(val);
+    return this.lgas.push(lgArray.lgas);
   }
 
   createForm(): void {
     this.createshopForm = this.fb.group({
       shopname: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(25)] ],
+      state: ['', Validators.required ],
+      lga: ['', Validators.required ],
       address: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(55)] ],
       telnum: ['', [Validators.required, Validators.pattern] ],
       email: ['', [Validators.required, Validators.email] ],
       description: ''
     });
-
-    this.createshopForm.valueChanges
-    	.subscribe(data => this.onValueChanged(data));
-
-	this.onValueChanged(); //reset form validation messages
+    this.createshopForm.valueChanges.subscribe(data => this.onValueChanged(data));
+	  this.onValueChanged(); //reset form validation messages
   }
 
   onValueChanged(data?: any) {
@@ -96,33 +115,41 @@ export class CreateshopComponent implements OnInit {
   	}
   }
 
+  goToDashboard() {
+    this.router.navigateByUrl('/dashboard');
+    this.response = null;
+  }
+
+  tryAgain() {
+    this.createshopErrMess = null;
+    this.showForm = true; 
+  }
+
   onSubmit() {
     this.createshop = this.createshopForm.value;
-    console.log(this.createshop);
-    this.spin = false;
-    this.hideForm = true;
-    this.createshopservice.submitShop(this.createshop)
-    .subscribe(shop => {
-      this.spin = true;
-      this.createshop = shop;
-      setTimeout(() => {
-        this.createshop = null;
-        this.hideForm = false;
-      }, 5000);
+    console.log('new shop ',this.createshop);
+    this.showForm = false;
+    this.createshopservice.createShop(this.createshop)
+    .subscribe(res => {
+      console.log('created shop ',res);
+      this.response = res;
+      this.createshop = null;
+      /*setTimeout(() => {
+        this.response = null;
+        this.showForm = true;
+      }, 5000);*/
     },
-    createshopErrMess => {
-      this.createshop = null; 
-        //this.createshopCopy = null; 
-        this.createshopErrMess = <any>createshopErrMess;
+    error => {
+      this.createshopErrMess = <any>error;
     });
 
-    this.createshopForm.reset({
+    /*this.createshopForm.reset({
     	shopname: '',
   		address: '',
   		telnum: '',
   		email: '',
   		description: ''
-    });
+    });*/
     this.createshopFormDirective.resetForm();
   }
 

@@ -149,27 +149,4 @@ export class SignupComponent implements OnInit {
     this.signupFormDirective.resetForm();
   }
 
-  //Social sign up
-  public socialSignIn(socialPlatform : string) {
-    let socialPlatformProvider;
-    if(socialPlatform == "facebook"){
-      socialPlatformProvider = FacebookLoginProvider.PROVIDER_ID;
-    }else if(socialPlatform == "google"){
-      socialPlatformProvider = GoogleLoginProvider.PROVIDER_ID;
-    }
-    
-    this.socialAuthService.signIn(socialPlatformProvider).then(
-      (userData) => {
-        //console.log(socialPlatform +" sign in data : " , userData);
-        // Now sign-in with userData
-        this.socialuser.name = userData.name;
-        this.socialuser.email = userData.email;
-        this.socialuser.image = userData.image;
-        this.socialuser.token = userData.idToken;
-        //console.log('social user sign in data : ' , this.socialuser); 
-        this.loginservice.loginSocialUser(this.socialuser);
-      }
-    );
-  }
-
 }

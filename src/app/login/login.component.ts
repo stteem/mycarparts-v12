@@ -2,8 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialogRef} from '@angular/material';
 import { AuthService, FacebookLoginProvider, GoogleLoginProvider } from 'angular-6-social-login';
 import { LoginService } from '../services/login.service';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { AuthenticationService } from '../services/auth.service';
+import { Location } from '@angular/common';
+
 
 
 
@@ -20,14 +22,22 @@ export class LoginComponent implements OnInit {
   socialuser = {token: ''};
   hide = true;
   loginErrMess: string;
+  private history: string[] = []
 
   constructor(
     public dialogRef: MatDialogRef<LoginComponent>,
     private loginservice: LoginService,
     private socialAuthService: AuthService,
     private router: Router,
-    private authService: AuthenticationService
-    ) { }
+    private authService: AuthenticationService,
+    private location: Location
+    ) { 
+      this.router.events.subscribe((event) => {
+        if (event instanceof NavigationEnd) {
+          this.history.push(event.urlAfterRedirects)
+        }
+      });
+    }
 
     public socialSignIn(socialPlatform : string) {
       let socialPlatformProvider;
@@ -54,10 +64,20 @@ export class LoginComponent implements OnInit {
 
 
   ngOnInit() {
+    //console.log('location ', this.location)
   }
 
   dialogClose() {
     this.dialogRef.close();
+  }
+
+  back(): void {
+    this.history.pop()
+    if (this.history.length > 0) {
+      this.location.back()
+    } else {
+      this.router.navigateByUrl('/')
+    }
   }
 
   onSubmit() {
@@ -66,7 +86,7 @@ export class LoginComponent implements OnInit {
     .subscribe(res => {
       if (res.success) {
         this.dialogRef.close(res.success);
-        this.router.navigateByUrl('/');
+        this.back();
       } else {
         console.log(res);
         //this.loginErrMess = res.errMsg;

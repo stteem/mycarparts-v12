@@ -11,7 +11,15 @@
     width: 100%;
 }
 
-@media (min-width: 700px){
+.dashboard-btn {
+    width: 50%;
+}
+
+#reg-success {
+    width: 100%;
+}
+
+@media (min-width: 900px){
     .full-width {
         width: 50%;
     }
@@ -24,6 +32,13 @@
     .form-size {
         width: 75%;
     }
+
+    #reg-success {
+        width: 50%;
+    }
+    .dashboard-btn {
+        width: 25%;
+    }
 }
 
 .createshop-btn{
@@ -31,6 +46,12 @@
     width: 50%;
     color: #ffff;
     font-size: 1.1em;
+}
+
+
+.try-again {
+    background-color: #bd2000;
+    margin-top: 20px;
 }
 
 
