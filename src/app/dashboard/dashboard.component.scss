@@ -1,0 +1,26 @@
+.mat-icon-store {
+    font-size: 100px;
+}
+
+.store {
+    width: 100%;
+}
+
+.store-card {
+    margin-bottom: 10px;
+}
+
+@media (min-width:900px){
+    .store-card {
+        width: 300px;
+    }
+}
+
+.more-vert > button {
+    float: right;
+}
+
+.spinner {
+    font-size: 15px;
+    color: hotpink;
+}

@@ -1,4 +1,5 @@
-export class Createshop {
+export class Shop {
+    _id: string;
     shopname: string;
     states: string;
     lgas: string;

@@ -1,3 +1,68 @@
-<p>
-  dashboard works!
-</p>
+<div class="container"
+     fxLayout="column"
+     fxLayoutGap="10px">
+
+  <div fxFlex>
+    <div>
+      <h3>Dashboard</h3>
+      <hr>
+    </div>
+  </div>
+  <div fxFlex *ngIf="shops"> 
+    <div *ngIf="shops?.length > 1">
+      <h4>Your Stores</h4>
+    </div>
+    <div [hidden]="shops?.length > 1 || shops?.length == 0">
+      <h4>Your Store</h4>
+    </div>
+  </div>
+
+  <div class="store" 
+  fxFlex 
+  fxLayout="row" 
+  fxLayout.sm="column"
+  fxLayout.xs="column"
+  fxLayoutGap="10px" 
+  *ngIf="shops">
+      <mat-card fxLayout="column" class="store-card" *ngFor="let shop of shops">
+        <span class="flex-spacer"></span>
+        <div class="more-vert">
+          <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item>
+              <span>Edit</span>
+            </button>
+            <button mat-menu-item>
+              <span>Delete</span>
+            </button>
+          </mat-menu>
+        </div>
+        <div class="store-div">
+          <mat-icon class="mat-icon-store">store</mat-icon>
+          <mat-card-header>
+            <mat-card-title>
+              <h3>{{shop.shopname | uppercase}}</h3>
+            </mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <p>{{shop.address}}, {{shop.lga}}, {{shop.state}}</p>
+            <button class="enable-color text-floral-white" mat-button routerLink="/">Add items to this store</button>
+          </mat-card-content>
+      </div>
+      </mat-card>
+  </div>
+  <div [hidden]="shops || errMess">
+    <mat-spinner class="spinner"></mat-spinner><h4>Loading . . . Please Wait</h4>
+  </div>
+  <div *ngIf="shops?.length == 0">
+    <p>You don't have any store yet.</p>
+    <button (click)="goToCreateStore()" type="button" mat-button class='dashboard-btn enable-color text-floral-white'>Create Store</button>
+  </div>
+  <div *ngIf="errMess">
+    <h2>Error</h2>
+    <h4>{{errMess}}</h4>
+  </div>
+
+</div>

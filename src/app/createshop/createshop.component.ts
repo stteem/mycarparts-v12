@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { Createshop } from '../shared/createshop';
+import { Shop } from '../shared/shop';
 import { CreateshopService } from '../services/createshop.service';
 import { Router } from '@angular/router';
 
@@ -20,7 +20,7 @@ import NaijaStates from 'naija-state-local-government';
 export class CreateshopComponent implements OnInit {
 
   createshopForm: FormGroup;
-  createshop: Createshop;
+  createshop: Shop;
   showForm = true;
   createshopErrMess: string;
   states = NaijaStates.states();

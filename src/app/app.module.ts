@@ -14,6 +14,7 @@ import { SignupService } from './services/signup.service';
 import { LoginService } from './services/login.service';
 import { AuthGuardService } from './services/auth-guard.service';
 import { SignupGuardService } from './services/signup-guard.service';
+import { DashboardService } from './services/dashboard.service';
 
 import { HttpClientModule } from '@angular/common/http';
 import { getAuthServiceConfigs } from './auth-service.config';
@@ -67,6 +68,11 @@ import { ProfileComponent } from './profile/profile.component';
     AuthenticationService,
     AuthGuardService,
     SignupGuardService,
+    DashboardService,
+    {
+      provide: 'baseURL', 
+      useValue: baseURL
+    },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
