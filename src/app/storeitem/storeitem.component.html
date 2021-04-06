@@ -1,0 +1,75 @@
+<mat-toolbar class="tbar" color="primary">
+	Add Store Item
+  <span class="flex-spacer"></span>
+  <a mat-button (click)="dialogClose()">&times;</a>
+  </mat-toolbar>
+
+<div class="container"
+  fxLayout="column"
+  fxLayoutGap="10px">
+
+  	<div fxFlex fxFlexOffset="20px" class="sform-size">
+	    
+	    <form novalidate [formGroup]="storeitemForm" #sform="ngForm" (ngSubmit)="onSubmit()" >
+	      	<p>
+	        <mat-form-field class="sform-width">
+	          <input matInput formControlName="vehicletype" placeholder="Vehicle Type" type="text" required>
+	          <mat-error *ngIf="formErrors.vehicletype">{{formErrors.vehicletype}}</mat-error>
+	        </mat-form-field>
+			</p>
+
+			<p>
+				<mat-form-field class="sform-width">
+					<input matInput formControlName="model" placeholder="Model" type="text" required>
+					<mat-error *ngIf="formErrors.model">{{formErrors.model}}</mat-error>
+				</mat-form-field>
+			</p>
+
+	      	<p>
+	        <mat-form-field class="sform-width">
+	          <input matInput formControlName="year" placeholder="Year" type="tel" pattern="[+0-9]*" required>
+	          <mat-error *ngIf="formErrors.year">{{formErrors.year}}</mat-error>
+	        </mat-form-field>
+			</p>
+
+			<p>
+	        <mat-form-field class="sform-width">
+	          <input matInput formControlName="part" placeholder="Part" type="text" required>
+	          <mat-error *ngIf="formErrors.part">{{formErrors.part}}</mat-error>
+	        </mat-form-field>
+	      	</p>
+
+			<p>
+				<mat-form-field class="sform-width">
+				  <input matInput formControlName="price" placeholder="Price" type="tel" pattern="[+0-9]*" required>
+				  <mat-error *ngIf="formErrors.price">{{formErrors.price}}</mat-error>
+				</mat-form-field>
+			</p>
+
+          <div class="img-div">
+            <button type="button" mat-button class="img-btn" color="accent" (click)="onClick()">
+              <mat-icon>file_upload</mat-icon>
+                  Add Image
+            </button>
+			<p *ngIf="storeitemForm.controls.price.touched && storeitemForm.controls.image.pristine" class="img-req">Image is required</p>
+			<mat-progress-bar *ngIf="progress_bar" class="prog-bar"  [value]="progress" ></mat-progress-bar>
+			<div>
+				<img *ngIf="fileurl" [src]="fileurl" class="upload-avatar" />
+			</div>
+			
+				<input formControlName="image" type="file" id="image" name="image" style="display:none;" required/>
+				<mat-error style="font-size: 12px; margin-bottom: 5px;" *ngIf="formErrors.image">{{formErrors.image}}</mat-error>
+          </div>
+		  <div style="height: 50px;">
+			<mat-error style="font-size: 12px;">{{storeitemErrMess}}</mat-error>
+		</div>
+			<div *ngIf="storeitemForm.invalid">
+				<button type="submit" [disabled]="storeitemForm.invalid" mat-button class='img-btn disable-color text-floral-white'>Add Item</button>
+			</div>
+			<div [hidden]="storeitemForm.invalid">
+				<button type="submit"  mat-button class='img-btn enable-color text-floral-white'>Add Item</button>
+			</div>
+	      	
+	    </form>
+	</div>
+</div>

@@ -20,6 +20,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { getAuthServiceConfigs } from './auth-service.config';
 import { ProcessHttpmsgService } from './services/process-httpmsg.service';
 import { AuthenticationService } from './services/auth.service';
+import { StoreitemsService } from './services/storeitems.service';
+
 import { AuthInterceptor, UnauthorizedInterceptor } from './services/auth.interceptor';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
 
@@ -38,6 +40,8 @@ import { CreateshopComponent } from './createshop/createshop.component';
 import { SignupComponent } from './signup/signup.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ProfileComponent } from './profile/profile.component';
+import { StoreitemComponent } from './storeitem/storeitem.component';
+import { StoreComponent } from './store/store.component';
 
 
 
@@ -50,7 +54,9 @@ import { ProfileComponent } from './profile/profile.component';
     CreateshopComponent,
     SignupComponent,
     DashboardComponent,
-    ProfileComponent
+    ProfileComponent,
+    StoreitemComponent,
+    StoreComponent
   ],
   imports: [
     BrowserModule,
@@ -69,6 +75,7 @@ import { ProfileComponent } from './profile/profile.component';
     AuthGuardService,
     SignupGuardService,
     DashboardService,
+    StoreitemsService,
     {
       provide: 'baseURL', 
       useValue: baseURL
@@ -92,7 +99,13 @@ import { ProfileComponent } from './profile/profile.component';
       useFactory: getAuthServiceConfigs
     }
    ],
-  entryComponents: [SidenavComponent, LoginComponent],
+  entryComponents: [SidenavComponent, LoginComponent, StoreitemComponent],
   bootstrap: [AppComponent, SidenavComponent]
 })
 export class AppModule { }
+
+
+
+//? Choose a prebuilt theme name, or "custom" for a custom theme: Indigo/Pink
+//? Set up global Angular Material typography styles? Yes
+//? Set up browser animations for Angular Material? Yes

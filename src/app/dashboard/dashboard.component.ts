@@ -23,12 +23,19 @@ export class DashboardComponent implements OnInit {
     this.dashboardService.getShops()
       .subscribe(shops => setTimeout(() => {
         this.shops = shops
-      }, 3000) ,
+        console.log('shop', shops)
+      }, 1000) ,
         errmess => this.errMess = <any>errmess);
   }
 
   goToCreateStore() {
     this.router.navigateByUrl('/createshop');
+  }
+
+  enterStore(storeId: string) {
+    console.log('dash ', storeId)
+    this.dashboardService.sendStoreId(storeId);
+    this.router.navigateByUrl('/store');
   }
 
 }

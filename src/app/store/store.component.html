@@ -1,19 +1,22 @@
 <div class="container"
      fxLayout="column"
      fxLayoutGap="10px">
-
+  
   <div fxFlex>
-    <div>
-      <h3>Dashboard</h3>
+    <div class="store">
+      <h3>My Store</h3>
+      <button class="enable-color text-floral-white" mat-button (click)="openStoreForm()">
+        Add items to this store
+        </button>
       <hr>
     </div>
   </div>
-  <div fxFlex *ngIf="shops"> 
-    <div *ngIf="shops?.length > 1">
-      <h4>Your Stores</h4>
+  <div fxFlex *ngIf="items"> 
+    <div *ngIf="items?.length > 1">
+      <h4>My Items</h4>
     </div>
-    <div [hidden]="shops?.length > 1 || shops?.length == 0">
-      <h4>Your Store</h4>
+    <div [hidden]="items?.length > 1 || items?.length == 0">
+      <h4>My Item</h4>
     </div>
   </div>
 
@@ -23,8 +26,8 @@
   fxLayout.sm="column"
   fxLayout.xs="column"
   fxLayoutGap="10px" 
-  *ngIf="shops">
-      <mat-card fxLayout="column" class="store-card" *ngFor="let shop of shops">
+  *ngIf="items?.length > 0">
+      <mat-card fxLayout="column" class="store-card" *ngFor="let item of items">
         <span class="flex-spacer"></span>
         <div class="more-vert">
           <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
@@ -40,29 +43,26 @@
           </mat-menu>
         </div>
         <div class="store-div">
-          <mat-icon class="mat-icon-store">store</mat-icon>
+          <img style="width: 100%;" src="{{item.imageurl}}" alt={{item.vehicletype}}>
           <mat-card-header>
             <mat-card-title>
-              <h3>{{shop.shopname | uppercase}}</h3>
+              <h3>{{item.vehicletype | uppercase}} {{item.model}}</h3>
             </mat-card-title>
           </mat-card-header>
           <mat-card-content>
-            <p>{{shop.address}}, {{shop.lga}}, {{shop.state}}</p>
-            <button class="enable-color text-floral-white" mat-button [routerLink]="['/store', shop._id]">Enter store</button>
+            <p>{{item.part}}, {{item.price}}, {{item.year}}</p>
           </mat-card-content>
       </div>
       </mat-card>
   </div>
-  <div [hidden]="shops || errMess">
+  <div [hidden]="items || storeErrMess">
     <mat-spinner class="spinner"></mat-spinner><h4>Loading . . . Please Wait</h4>
   </div>
-  <div *ngIf="shops?.length == 0">
-    <p>You don't have any store yet.</p>
-    <button routerLink="/createshop" type="button" mat-button class='dashboard-btn enable-color text-floral-white'>Create Store</button>
+  <div *ngIf="storeErrMess">
+    <h4>{{storeErrMess}}</h4>
   </div>
-  <div *ngIf="errMess">
-    <h2>Error</h2>
-    <h4>{{errMess}}</h4>
-  </div>
-
 </div>
+
+
+
+

@@ -7,12 +7,16 @@ import { HomeComponent } from '../home/home.component';
 import { SignupComponent } from '../signup/signup.component';
 import { DashboardComponent } from '../dashboard/dashboard.component';
 import { ProfileComponent } from '../profile/profile.component';
+import { StoreitemComponent } from '../storeitem/storeitem.component';
+import { StoreComponent } from '../store/store.component';
 
 export const routes: Routes = [
   { path: 'sidenav', component: SidenavComponent},
   { path: 'home',  component: HomeComponent },
   { path: 'createshop',  component: CreateshopComponent, canActivate: [AuthGuard] },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard]},
+  { path: 'store/:id', component: StoreComponent, canActivate: [AuthGuard]},
+  { path: 'storeitem', component: StoreitemComponent, canActivate: [AuthGuard]},
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard]},
   { path: 'signup', component: SignupComponent, canActivate: [SignUpGuard] },
   { path: '', redirectTo: '/home', pathMatch: 'full' }

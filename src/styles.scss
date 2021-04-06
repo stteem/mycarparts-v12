@@ -67,3 +67,65 @@ $divider-color:        #BDBDBD;
 .text-floral-white {
     color: floralwhite!important;
 }
+.tbar {
+  height: 60px;
+  background-color: #8c0000;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.half-width {
+  width: 100%;
+  margin: 7px;
+}
+
+.form-size {
+  width: 100%;
+}
+
+.dashboard-btn {
+  width: 50%;
+}
+
+#reg-success {
+  width: 100%;
+}
+
+@media (min-width: 900px){
+  .full-width {
+      width: 50%;
+  }
+  
+  .half-width {
+      width: 50%;
+      margin: 5px;
+  }
+  
+  .form-size {
+      width: 75%;
+  }
+
+  #reg-success {
+      width: 50%;
+  }
+  .dashboard-btn {
+      width: 25%;
+  }
+}
+
+.createshop-btn{
+   //#a02905;
+  width: 50%;
+  color: #ffff;
+  font-size: 1.1em;
+}
+
+
+.try-again {
+  background-color: #bd2000;
+  margin-top: 20px;
+}
+
+
