@@ -18,3 +18,16 @@
 .pos {
     position: fixed;
 }
+
+.store-d {
+    width: 100%;
+    padding: 20px;
+    position: fixed;
+    z-index: 2;
+    background-color: white;
+}
+
+.item-div {
+    position: relative;
+    top: 80px;
+}

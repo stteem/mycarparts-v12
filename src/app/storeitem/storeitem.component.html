@@ -64,10 +64,14 @@
 			<mat-error style="font-size: 12px;">{{storeitemErrMess}}</mat-error>
 		</div>
 			<div *ngIf="storeitemForm.invalid">
-				<button type="submit" [disabled]="storeitemForm.invalid" mat-button class='img-btn disable-color text-floral-white'>Add Item</button>
+				<button type="submit" [disabled]="storeitemForm.invalid" mat-button class=' img-btn disable-color text-floral-white'>
+					<span class="btn-spinner"><span [hidden]="spinner"><mat-spinner [diameter]="20"></mat-spinner></span>Add Item</span>
+				</button>
 			</div>
 			<div [hidden]="storeitemForm.invalid">
-				<button type="submit"  mat-button class='img-btn enable-color text-floral-white'>Add Item</button>
+				<button type="submit"  mat-button class='img-btn enable-color text-floral-white'>
+					<span class="btn-spinner"><span [hidden]="spinner"><mat-spinner [diameter]="20"></mat-spinner></span>Add Item</span>
+				</button>
 			</div>
 	      	
 	    </form>

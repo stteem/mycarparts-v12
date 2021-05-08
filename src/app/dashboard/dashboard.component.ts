@@ -28,14 +28,14 @@ export class DashboardComponent implements OnInit {
         errmess => this.errMess = <any>errmess);
   }
 
-  goToCreateStore() {
-    this.router.navigateByUrl('/createshop');
-  }
-
-  enterStore(storeId: string) {
-    console.log('dash ', storeId)
-    this.dashboardService.sendStoreId(storeId);
-    this.router.navigateByUrl('/store');
+  tryAgain() {
+    this.errMess = null;
+    this.dashboardService.getShops()
+      .subscribe(shops => setTimeout(() => {
+        this.shops = shops;
+        console.log('try again', shops)
+      }, 1000) ,
+        errmess => this.errMess = <any>errmess);
   }
 
 }

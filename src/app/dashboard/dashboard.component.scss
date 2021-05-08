@@ -10,16 +10,21 @@
     margin-bottom: 10px;
 }
 
+.spinner {
+    margin-left: 45%;
+    top: 150px;
+}
+
 @media (min-width:900px){
     .store-card {
         width: 300px;
+    }
+    .spinner {
+        margin-left: 50%;
+        top: 150px;
     }
 }
 
 .more-vert > button {
     float: right;
-}
-
-.spinner {
-    font-size: 15px;
 }

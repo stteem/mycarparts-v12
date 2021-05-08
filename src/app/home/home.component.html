@@ -1,48 +1,83 @@
+<div class="mheader">
+  <div class="container"
+    fxLayout="column"
+    fxLayout.sm="column"
+    fxLayout.xs="column"
+    fxLayoutAlign.gt-md="space-around center"
+    fxLayoutAlign.md="space-around center"
+    fxLayoutGap="5px" 
+    fxLayoutGap.xs="0">
+
+    <mat-card class="mcard">
+      <form [formGroup]="searchForm" novalidate #searchform="ngForm" (ngSubmit)="onSubmit()">
+
+        <h2 style="text-align: center;">Find and Compare Spare Parts Prices in Nigeria</h2>
+
+        <p fxLayout="row wrap" fxLayoutGap="4px">
+          <mat-form-field class="form-width" appearance="fill">
+            <mat-label>Vehicle Type</mat-label>
+            <input matInput type="text" formControlName="vehicletype" name="vehicletype" required>
+          </mat-form-field>
+          <mat-form-field class="form-width" appearance="fill">
+            <mat-label>Model</mat-label>
+            <input matInput type="text" formControlName="model" name="model" required>
+          </mat-form-field>
+        
+          <mat-form-field class="form-width" appearance="fill">
+            <mat-label>Year</mat-label>
+            <input matInput type="text" formControlName="year" pattern="[+0-9]*" required>
+          </mat-form-field>
+          <mat-form-field class="form-width" appearance="fill">
+            <mat-label>Part</mat-label>
+            <input matInput type="text" formControlName="part" name="part" required>
+          </mat-form-field>
+          <mat-form-field class="form-width" appearance="fill">
+            <mat-label>State</mat-label>
+            <input matInput type="text" formControlName="state" name="state" required>
+          </mat-form-field>
+          <mat-form-field class="form-width" appearance="fill">
+            <mat-label>City</mat-label>
+            <input matInput type="text" formControlName="city" name="city" required>
+          </mat-form-field>
+          <button type="submit" mat-button class="search-button text-floral-white" [disabled]="searchForm.invalid" >Search</button>
+        </p>   
+      </form>
+    </mat-card> 
+  </div>
+</div>
+
 <div class="container"
-  fxLayout="row"
-  fxLayout.sm="column"
-  fxLayout.xs="column"
-  fxLayoutAlign.gt-md="space-around center"
-  fxLayoutAlign.md="space-around center"
-  fxLayoutGap="10px" 
-  fxLayoutGap.xs="0">
-
-  <form id="searchform" novalidate #searchForm="ngForm" (ngSubmit)="onSubmit()">
-
-    <h3 style="text-align: center;">Compare Spare Parts Prices in Nigeria</h3>
-
-      <p fxLayout="row" fxLayoutGap="7px" >
-        <mat-form-field class="form-width" appearance="fill">
-          <mat-label>Vehicle Type</mat-label>
-          <input matInput type="text" [(ngModel)]="search.vehicletype" name="vehicletype" required>
-        </mat-form-field>
-        <mat-form-field class="form-width" appearance="fill">
-          <mat-label>Model</mat-label>
-          <input matInput type="text" [(ngModel)]="search.model" name="model" required>
-        </mat-form-field>
-      </p>
-      <p fxLayout="row" fxLayoutGap="7px">
-        <mat-form-field class="form-width" appearance="fill">
-          <mat-label>Year</mat-label>
-          <input matInput type="text" [(ngModel)]="search.year" name="year" required>
-        </mat-form-field>
-        <mat-form-field class="form-width" appearance="fill">
-          <mat-label>Part</mat-label>
-          <input matInput type="text" [(ngModel)]="search.part" name="part" required>
-        </mat-form-field>
-      </p>
-      <p fxLayout="row" fxLayoutGap="7px">
-        <mat-form-field class="form-width" appearance="fill">
-          <mat-label>State</mat-label>
-          <input matInput type="text" [(ngModel)]="search.state" name="state" required>
-        </mat-form-field>
-        <mat-form-field class="form-width" appearance="fill">
-          <mat-label>City</mat-label>
-          <input matInput type="text" [(ngModel)]="search.city" name="city" required>
-        </mat-form-field>
-      </p>
-      
-      <button type="submit" mat-button class="search-button text-floral-white" [disabled]="searchForm.form.invalid" >Search</button>
-  </form>
+fxLayout="column"
+fxLayout.sm="column"
+fxLayout.xs="column"
+fxLayoutAlign.gt-md="space-around center"
+fxLayoutAlign.md="space-around center"
+fxLayoutGap="5px" 
+fxLayoutGap.xs="0">
   
+
+  <div class="results-div">
+    <div [hidden]="showForm || results || searchErrMess">
+      <mat-spinner [diameter]="40" class="spinner"></mat-spinner>
+    </div>
+
+    <mat-list *ngIf="results">
+      <h3 *ngIf="results?.length < 2">{{results.length}} result in {{search.city}}, {{search.state}}</h3>
+      <h3 *ngIf="results?.length > 1">{{results.length}} results in {{search.city}}, {{search.state}}</h3>
+      <mat-list-item *ngFor="let result of results">
+        <h3 matLine style="color: forestgreen;">{{result.part | titlecase}} for {{result.vehicletype}}</h3>
+        <p matLine><strong>Model</strong>: {{result.model | titlecase}} {{result.year}}</p>
+        <p matLine><strong>Price</strong>: {{result.price}}</p>
+        <p matLine><strong>Store</strong>: {{result.shopname}}, {{result.address}}</p>
+        <p matLine><strong>Phone</strong>: {{result.telnum}}</p>
+        <button matLine mat-button class="enable-color text-floral-white add-to-cart" (click)="addToCart(result._id, result.storeid)">
+          Add to cart
+        </button>
+      </mat-list-item>
+    </mat-list>
+      
+      <div *ngIf="searchErrMess">
+        <h4>{{searchErrMess}}</h4>
+      </div>
+  </div>
 </div>

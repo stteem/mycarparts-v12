@@ -20,7 +20,7 @@ export class StoreitemComponent implements OnInit, OnDestroy {
 
   storeitemForm: FormGroup;
   storeitem: Item;
-  //showForm = true;
+  spinner: boolean = true;
   storeitemErrMess: string;
   response = null;
   fileurl: string;
@@ -83,7 +83,8 @@ export class StoreitemComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     //this.subscription = this.dashboardService.currentStore.subscribe(id => this.store_id = id);
-    console.log('modal store id', this.store_id)
+    console.log('modal store id', this.store_id);
+    this.spinner = true;
   }
 
   ngOnDestroy() {
@@ -176,17 +177,20 @@ export class StoreitemComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
+    this.storeitemErrMess = null;
     this.storeitem = this.storeitemForm.value;
     console.log('new shop ',this.storeitem);
-    //this.showForm = false;
+    this.spinner = false;
     this.storeitemsservice.submitItem(this.store_id, this.storeitem, this.file)
     .subscribe(res => {
       console.log('created item ',res);
       this.response = res;
       this.storeitem = null;
+      this.spinner = true;
       this.dialogClose();
     },
     error => {
+      this.spinner = true;
       this.storeitemErrMess = <any>error;
     });
     //this.storeitemFormDirective.resetForm();

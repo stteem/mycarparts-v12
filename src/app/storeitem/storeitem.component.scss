@@ -45,3 +45,12 @@ $mat-card-header-size: 70px !default;
     font-size: 12px;
     color: rgb(165, 158, 158);
 }
+
+.btn-spinner{
+    display: flex;
+    justify-content:center;
+    align-items: center;
+}
+.btn-spinner > span > mat-spinner{
+    margin-right: 10px;
+}

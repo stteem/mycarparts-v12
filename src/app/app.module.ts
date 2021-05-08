@@ -21,6 +21,7 @@ import { getAuthServiceConfigs } from './auth-service.config';
 import { ProcessHttpmsgService } from './services/process-httpmsg.service';
 import { AuthenticationService } from './services/auth.service';
 import { StoreitemsService } from './services/storeitems.service';
+import { CartService } from './services/cart.service';
 
 import { AuthInterceptor, UnauthorizedInterceptor } from './services/auth.interceptor';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
@@ -42,6 +43,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { ProfileComponent } from './profile/profile.component';
 import { StoreitemComponent } from './storeitem/storeitem.component';
 import { StoreComponent } from './store/store.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 
 
@@ -64,7 +67,8 @@ import { StoreComponent } from './store/store.component';
     AppRoutingModule,
     BrowserAnimationsModule,
     MaterialModules,
-    SocialLoginModule
+    SocialLoginModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [
     CreateshopService,
@@ -76,6 +80,7 @@ import { StoreComponent } from './store/store.component';
     SignupGuardService,
     DashboardService,
     StoreitemsService,
+    CartService,
     {
       provide: 'baseURL', 
       useValue: baseURL

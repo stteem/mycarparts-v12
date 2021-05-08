@@ -1,66 +1,75 @@
-<div class="container"
+<div class="store-d" fxFlex>
+  <div fxLayout="row" class="store">
+    <h3>My Store</h3>
+    <span class="flex-spacer"></span>
+    <button style="height: fit-content;" class="enable-color text-floral-white" mat-button (click)="openStoreForm()">
+      Add items to this store
+      </button>
+  </div>
+  <hr>
+</div>
+
+
+<div class="container item-div"
      fxLayout="column"
      fxLayoutGap="10px">
-  
-  <div fxFlex>
-    <div class="store">
-      <h3>My Store</h3>
-      <button class="enable-color text-floral-white" mat-button (click)="openStoreForm()">
-        Add items to this store
-        </button>
-      <hr>
-    </div>
-  </div>
-  <div fxFlex *ngIf="items"> 
-    <div *ngIf="items?.length > 1">
-      <h4>My Items</h4>
-    </div>
-    <div [hidden]="items?.length > 1 || items?.length == 0">
-      <h4>My Item</h4>
-    </div>
-  </div>
 
-  <div class="store" 
-  fxFlex 
-  fxLayout="row" 
-  fxLayout.sm="column"
-  fxLayout.xs="column"
-  fxLayoutGap="10px" 
-  *ngIf="items?.length > 0">
-      <mat-card fxLayout="column" class="store-card" *ngFor="let item of items">
-        <span class="flex-spacer"></span>
-        <div class="more-vert">
-          <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
-            <mat-icon>more_vert</mat-icon>
-          </button>
-          <mat-menu #menu="matMenu">
-            <button mat-menu-item>
-              <span>Edit</span>
-            </button>
-            <button mat-menu-item>
-              <span>Delete</span>
-            </button>
-          </mat-menu>
-        </div>
-        <div class="store-div">
-          <img style="width: 100%;" src="{{item.imageurl}}" alt={{item.vehicletype}}>
-          <mat-card-header>
-            <mat-card-title>
-              <h3>{{item.vehicletype | uppercase}} {{item.model}}</h3>
-            </mat-card-title>
-          </mat-card-header>
-          <mat-card-content>
-            <p>{{item.part}}, {{item.price}}, {{item.year}}</p>
-          </mat-card-content>
+     <div fxFlex *ngIf="items"> 
+      <div *ngIf="items?.length > 1">
+        <h4>My Items</h4>
       </div>
-      </mat-card>
-  </div>
-  <div [hidden]="items || storeErrMess">
-    <mat-spinner class="spinner"></mat-spinner><h4>Loading . . . Please Wait</h4>
-  </div>
-  <div *ngIf="storeErrMess">
-    <h4>{{storeErrMess}}</h4>
-  </div>
+      <div [hidden]="items?.length > 1 || items?.length == 0">
+        <h4>My Item</h4>
+      </div>
+    </div>
+  
+    
+  
+
+    <div class="store" 
+    fxFlex 
+    fxLayout="row wrap" 
+    fxLayout.sm="column"
+    fxLayout.xs="column"
+    fxLayoutGap="50px" 
+    *ngIf="items?.length > 0">
+        <mat-card fxLayout="column" class="store-card" *ngFor="let item of items">
+          <span class="flex-spacer"></span>
+          <div class="more-vert">
+            <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item>
+                <span>Edit</span>
+              </button>
+              <button mat-menu-item>
+                <span>Delete</span>
+              </button>
+            </mat-menu>
+          </div>
+          <div class="store-div">
+            <img style="width: 100%;" src="{{item.imageurl}}" alt={{item.vehicletype}}>
+            <mat-card-header>
+              <mat-card-title>
+                <h3>{{item.vehicletype | uppercase}} {{item.model}}</h3>
+              </mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <p>{{item.part}}, {{item.price}}, {{item.year}}</p>
+            </mat-card-content>
+        </div>
+        </mat-card>
+    </div>
+    <div [hidden]="items || storeErrMess">
+      <mat-spinner class="spinner"></mat-spinner><h4>Loading . . . Please Wait</h4>
+    </div>
+    <div *ngIf="items?.length == 0">
+      <p>You don't have any items in your store yet.</p>
+    </div>
+    <div *ngIf="storeErrMess">
+      <h4>{{storeErrMess}}</h4>
+    </div>
 </div>
 
 

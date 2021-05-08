@@ -2,9 +2,13 @@
      fxLayout="column"
      fxLayoutGap="10px">
 
-  <div fxFlex>
+  <div fxFlex >
     <div>
-      <h3>Dashboard</h3>
+      <div fxLayout="row">
+        <h3>Dashboard</h3>
+        <span class="flex-spacer"></span>
+        <button style="height:fit-content; width:fit-content;" routerLink="/createshop" type="button" mat-button class='dashboard-btn enable-color text-floral-white'>Create New Store</button>
+      </div>
       <hr>
     </div>
   </div>
@@ -19,7 +23,7 @@
 
   <div class="store" 
   fxFlex 
-  fxLayout="row" 
+  fxLayout="row wrap" 
   fxLayout.sm="column"
   fxLayout.xs="column"
   fxLayoutGap="10px" 
@@ -53,16 +57,16 @@
       </div>
       </mat-card>
   </div>
-  <div [hidden]="shops || errMess">
-    <mat-spinner class="spinner"></mat-spinner><h4>Loading . . . Please Wait</h4>
-  </div>
   <div *ngIf="shops?.length == 0">
     <p>You don't have any store yet.</p>
-    <button routerLink="/createshop" type="button" mat-button class='dashboard-btn enable-color text-floral-white'>Create Store</button>
   </div>
+  <div [hidden]="shops || errMess">
+    <mat-spinner [diameter]="40" class="spinner"></mat-spinner>
+  </div>
+  
   <div *ngIf="errMess">
-    <h2>Error</h2>
     <h4>{{errMess}}</h4>
+    <button type="button" class="enable-color text-floral-white" mat-button (click)="tryAgain()">Try again</button>
   </div>
 
 </div>

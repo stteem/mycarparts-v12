@@ -1,15 +1,69 @@
-@media(max-width:500px){
-    mat-form-field.form-width {
-        width: 175px;
-    }
+.mheader {
+    top: 0;
+    height: 500px;
+    width: 100%;
+    background-image: url('../../assets/1st.png');
+}
+
+mat-form-field.form-width {
+    width: 150px;
 }
 
 .search-button{
     background-color: #bd2000; //#a02905;
-    width: 100%;
+    width: 99%;
+    height: fit-content;
     color: #ffff;
     font-size: 1.1em;
 }
+
+.mcard {
+    top: 20px;
+}
+
+.spinner {
+    margin-left: 45%;
+    top: 50px;
+}
+
+.add-to-cart {
+    width: fit-content;
+}
+
+@media(min-width:900px){
+    mat-form-field.form-width {
+        width: 135px;
+    }
+
+    .search-button{
+        width: fit-content;
+    }
+
+    .mcard {
+        top: 400px;
+    }
+
+    .results-div {
+        margin-top: 150px;
+    }
+
+    .spinner {
+        margin-left: 50%;
+    }
+}
+
+.results-div {
+    position: relative;
+    height: 200px;
+    width: 100%;
+}
+
+@media(min-width:1400px){
+    .results-div > mat-list {
+        margin-left: 200px;
+    }
+}
+
 
 #searchform {
     margin-top: 30px;
