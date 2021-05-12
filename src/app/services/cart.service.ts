@@ -1,11 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, of} from 'rxjs';
+import { Order } from '../shared/order';
 
-
-
-interface Order {
-  itemid: string;
-  storeid: string;
+interface OrderId {
+  _id: string;
 }
 
 @Injectable({
@@ -13,34 +11,53 @@ interface Order {
 })
 export class CartService {
 
-  orders = [];
-  orderObj = {} as Order;
-
-  private messageSource = new BehaviorSubject({});
-  currentOrderCount = this.messageSource.asObservable();
+  exists = JSON.parse(localStorage.getItem('order'));
+  orders = this.exists == null ? [] : this.exists;
 
   constructor() { }
 
-  addItemToCart(itemid: string, storeid: string)  {
-    this.orderObj.itemid = itemid;
-    this.orderObj.storeid = storeid;
-    this.orders.push(this.orderObj)
-    return Promise.resolve().then(() => {
-      localStorage.setItem('order', JSON.stringify(this.orders));
-    })
-    .then(() => {
-      const order = JSON.parse(localStorage.getItem('order'));
-      console.log('cart order 1 ', order)
-      this.messageSource.next(order.length);
-    });
+  addItemToCart(item: Order): Observable<OrderId>  {
+    this.orders.push(item);
+    localStorage.setItem('order', JSON.stringify(this.orders)); 
+    const storedOrder = JSON.parse(localStorage.getItem('order'));
+    const filtered = storedOrder.filter(storeditem => storeditem._id == item._id );
+
+    return of(filtered[0]._id);
   }
 
-  getCartItems() {
-    const order = JSON.parse(localStorage.getItem('order'));
-    if (order !== null) {
-      console.log('cart order 2 ', order)
-      return this.messageSource.next(order.length);
+
+  removeItem(itemid) {
+    console.log('cart service itemid ', itemid)
+    const updatedOrder = [];
+    const storedOrder = JSON.parse(localStorage.getItem('order'));
+    for (let i = 0; i < storedOrder.length; i++) {
+      const element = storedOrder[i];
+      if (element._id == itemid) {
+        storedOrder.splice(element, 1);
+        console.log('updated order ', storedOrder)
+        updatedOrder.push(storedOrder);
+        Promise.resolve().then(() => {
+          localStorage.setItem('order', JSON.stringify(updatedOrder)); 
+        })
+        .then(() => {
+  
+        })
+      }
     }
-    else return this.messageSource.next(this.orders.length);
+    
+
+  }
+
+  getCartItems(): Observable<any> {
+    const values = [];
+    const storedOrder = JSON.parse(localStorage.getItem('order'));
+    if (storedOrder !== null) {
+      for (let i = 0; i < storedOrder.length; i++) {
+        const element = storedOrder[i];
+        values.push(element._id);
+      }
+      return of(values);
+    }
+    return of(values);
   }
 }

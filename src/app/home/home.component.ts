@@ -1,15 +1,16 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SearchService } from '../services/search.service';
 import { CartService } from '../services/cart.service';
 import { Subscription } from 'rxjs';
-
+//import { CheckcartPipe } from '../checkcart.pipe';
 
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  styleUrls: ['./home.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Default
 })
 export class HomeComponent implements OnInit {
   
@@ -17,8 +18,11 @@ export class HomeComponent implements OnInit {
   results: any;
   searchErrMess: string;
   showForm = true;
-  cartItems = null;
+  cartItems: any = [];
   subscription: Subscription;
+  add = true;
+  remove = false;
+  isShown: boolean = false;
 
 
   search = {
@@ -72,21 +76,20 @@ export class HomeComponent implements OnInit {
     private searchservice: SearchService,
     private cartservice: CartService) { 
       this.createForm();
-      this.subscription = this.cartservice.currentOrderCount.subscribe(count => this.cartItems = count);
   }
 
   ngOnInit() {
     
-    Promise.resolve().then(() => {
-      this.cartservice.getCartItems();
+    this.cartservice.getCartItems().subscribe(res => {
+      if ( res != null) {
+        res.forEach((element: string) => {
+          this.cartItems.push(element);
+        });
+        console.log('cart items 2 ',this.cartItems);
+      }
     })
-    .then(() => {
-      this.subscription = this.cartservice.currentOrderCount
-        .subscribe(count => { this.cartItems = count; });
-        console.log('count order 1 ',this.cartItems)
-    });
-    console.log('count order 2 ',this.cartItems)
   }
+
 
   createForm(): void {
     this.searchForm = this.fb.group({
@@ -123,9 +126,20 @@ export class HomeComponent implements OnInit {
   }
 
 
-  addToCart(itemid, storeid) {
-    this.cartservice.addItemToCart(itemid, storeid);
+  addToCart(item) {
+    this.cartservice.addItemToCart(item)
+    .subscribe(res => {
+      this.cartItems.push(res);
+      console.log('cart items 1 ',this.cartItems);
+    })
   }
+
+  removeFromCart(itemid) {
+    console.log('remove called')
+    this.cartservice.removeItem(itemid);
+  }
+
+
 
   onSubmit() {
 
@@ -147,16 +161,16 @@ export class HomeComponent implements OnInit {
       // Isn't the most ideal, would have liked to perform that task server side, but that implementation 
       // would not lend itself.
       res.map((item) => {
-        console.log('item ', item)
+        //console.log('item ', item)
         for (let i = 0; i < item.items.length; i++) {
           const element = item.items[i];
           if(Object.is(element.vehicletype.toLowerCase(), this.search.vehicletype.toLowerCase())  && Object.is(element.model.toLowerCase(), this.search.model.toLowerCase())
             && Object.is(element.year.toLowerCase(), this.search.year.toLowerCase()) && Object.is(element.part.toLowerCase(), this.search.part.toLowerCase())) {
-              element.shopcount = item.shopcount;
+              element.shopname = item.shopname;
               element.address = item.address;
               element.telnum = item.telnum;
               element.storeid = item._id;
-              console.log('pushed ',element);
+              //console.log('pushed ',element);
               this.results.push(element);
           }
           

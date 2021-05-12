@@ -45,6 +45,7 @@ import { StoreitemComponent } from './storeitem/storeitem.component';
 import { StoreComponent } from './store/store.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { CheckcartPipe } from './checkcart.pipe';
 
 
 
@@ -59,7 +60,8 @@ import { environment } from '../environments/environment';
     DashboardComponent,
     ProfileComponent,
     StoreitemComponent,
-    StoreComponent
+    StoreComponent,
+    CheckcartPipe
   ],
   imports: [
     BrowserModule,
