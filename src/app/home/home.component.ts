@@ -134,9 +134,15 @@ export class HomeComponent implements OnInit {
     })
   }
 
-  removeFromCart(itemid) {
-    console.log('remove called')
-    this.cartservice.removeItem(itemid);
+  removeFromCart(itemid: string) {
+    this.cartservice.removeItem(itemid)
+    .subscribe(res => {
+      if (res == 'done') {
+        const cart = this.cartItems;
+        cart.splice(cart.findIndex(e => e === itemid), 1);
+        console.log('updated cart items ', this.cartItems)
+      }
+    })
   }
 
 

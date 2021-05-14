@@ -45,6 +45,9 @@
     </mat-card> 
   </div>
 </div>
+<div class="checkout-div">
+  <a *ngIf="cartItems.length > 0" class="button fancy-button">{{cartItems.length}}<mat-icon>shopping_cart</mat-icon>Checkout</a>
+</div>
 
 <div class="container"
 fxLayout="column"
@@ -71,7 +74,7 @@ fxLayoutGap.xs="0">
         <p matLine><strong>Store</strong>: {{result.shopname}}, {{result.address}}</p>
         <p matLine><strong>Phone</strong>: {{result.telnum}}</p>
           <ng-container matLine *ngIf="cartItems.includes(result._id); else showRemoveBtn">
-            <button matLine mat-button class="add-to-cart" color="accent" (click)="removeFromCart(result._id)">
+            <button matLine mat-button class="add-to-cart" color="warn" (click)="removeFromCart(result._id)">
               Remove from cart
             </button>
           </ng-container>
