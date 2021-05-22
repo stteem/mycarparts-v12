@@ -1,0 +1,44 @@
+<div class="container"
+fxLayout="column"
+fxLayout.sm="column"
+fxLayout.xs="column"
+fxLayoutAlign.gt-md="space-around center"
+fxLayoutAlign.md="space-around center"
+fxLayoutGap="5px" 
+fxLayoutGap.xs="0">
+  
+
+  <div class="items-div">
+    <mat-list *ngIf="cartItems">
+      <h2 *ngIf="totalQty == 1">Item in cart: {{totalQty}}</h2>
+      <h2 *ngIf="totalQty > 1">Items in cart: {{totalQty}}</h2>
+        <mat-list-item *ngFor="let cartItem of cartItems">
+          <h3 matLine style="color: rgb(29, 29, 29);">{{cartItem.part | titlecase}} for {{cartItem.vehicletype}}</h3>
+            <p matLine><strong>Model</strong>: {{cartItem.model | titlecase}} {{cartItem.year}}</p>
+            <p matLine><strong>Price</strong>: {{cartItem.price | currency:'NGN':'symbol-narrow':'3.0'}}</p>
+            <p matLine><strong>Store</strong>: {{cartItem.shopname}}, {{cartItem.address}}</p>
+            <p matLine><strong>Qty</strong>:<button mat-button-avatar [hidden]="cartItem.qty === 1" (click)="subtractFromQty(cartItem._id, cartItem.qty)">-</button> 
+              {{cartItem.qty}} <button mat-button-avatar (click)="addToQty(cartItem.qty, cartItem._id)">+</button>
+            </p>
+          <div matLine><strong>Total</strong>: {{cartItem.total | currency:'NGN':'symbol-narrow':'3.0'}}</div>
+          <button style="margin-top: 5px;" matLine mat-button class="add-to-cart" color="warn" (click)="removeFromCart(cartItem._id)">
+            Remove from cart
+          </button>
+          <div class="img-div">
+            <img src="{{cartItem.imageurl}}" style="width: 100%;" alt="cart item image" /> 
+          </div> 
+        </mat-list-item>
+        <p matLine *ngIf="totalSum != null"><strong>Total Sum</strong>: {{totalSum | currency:'NGN':'symbol-narrow':'3.0'}}</p>
+    </mat-list>
+    
+    <div *ngIf="cartItems.length == 0">
+      <h4>You have nothing in your cart, let's go shopping, shall we?</h4>
+      <button matLine mat-button class="add-to-cart" color="warn" routerLink="/home">
+        Navigate to home to search for auto parts
+      </button>
+    </div>
+      <div *ngIf="cartErrMess">
+        <h4>{{cartErrMess}}</h4>
+      </div>
+  </div>
+</div>

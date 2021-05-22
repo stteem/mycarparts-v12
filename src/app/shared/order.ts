@@ -6,6 +6,8 @@ export class Order {
     model: string;
     part: string;
     price: number;
+    qty: number;
+    total: number;
     shopname: string;
     storeid: string;
     telnum: string;

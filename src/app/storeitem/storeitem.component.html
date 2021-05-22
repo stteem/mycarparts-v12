@@ -27,7 +27,7 @@
 
 	      	<p>
 	        <mat-form-field class="sform-width">
-	          <input matInput formControlName="year" placeholder="Year" type="tel" pattern="[+0-9]*" required>
+	          <input matInput formControlName="year" placeholder="Year" type="text" pattern="[+0-9]*" required>
 	          <mat-error *ngIf="formErrors.year">{{formErrors.year}}</mat-error>
 	        </mat-form-field>
 			</p>
@@ -41,7 +41,7 @@
 
 			<p>
 				<mat-form-field class="sform-width">
-				  <input matInput formControlName="price" placeholder="Price" type="tel" pattern="[+0-9]*" required>
+				  <input matInput formControlName="price" placeholder="Price" type="text" pattern="[+0-9]*" required>
 				  <mat-error *ngIf="formErrors.price">{{formErrors.price}}</mat-error>
 				</mat-form-field>
 			</p>

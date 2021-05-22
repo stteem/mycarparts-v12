@@ -1,0 +1,18 @@
+.add-to-cart {
+    width: fit-content;
+    border: 1px solid #bd2000;
+}
+
+.items-div {
+    width: 100%;
+}
+
+@media(min-width: 900px) {
+    .items-div {
+        width: 60%;
+    }
+}
+
+.img-div {
+    width: 150px;
+}

@@ -9,6 +9,7 @@ import { DashboardComponent } from '../dashboard/dashboard.component';
 import { ProfileComponent } from '../profile/profile.component';
 import { StoreitemComponent } from '../storeitem/storeitem.component';
 import { StoreComponent } from '../store/store.component';
+import { CartComponent } from '../cart/cart.component';
 
 export const routes: Routes = [
   { path: 'sidenav', component: SidenavComponent},
@@ -19,5 +20,6 @@ export const routes: Routes = [
   { path: 'storeitem', component: StoreitemComponent, canActivate: [AuthGuard]},
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard]},
   { path: 'signup', component: SignupComponent, canActivate: [SignUpGuard] },
+  { path: 'cart', component: CartComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full' }
 ];

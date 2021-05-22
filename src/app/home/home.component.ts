@@ -80,6 +80,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     
+    // If a search is done, show items already in the cart
     this.cartservice.getCartItems().subscribe(res => {
       if ( res != null) {
         res.forEach((element: string) => {
@@ -176,7 +177,8 @@ export class HomeComponent implements OnInit {
               element.address = item.address;
               element.telnum = item.telnum;
               element.storeid = item._id;
-              //console.log('pushed ',element);
+              /*element.price = new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN' }).format(element.price.toFixed(2));*/
+              console.log('pushed ',element.price);
               this.results.push(element);
           }
           

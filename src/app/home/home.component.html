@@ -46,7 +46,7 @@
   </div>
 </div>
 <div class="checkout-div">
-  <a *ngIf="cartItems.length > 0" class="button fancy-button">{{cartItems.length}}<mat-icon>shopping_cart</mat-icon>Checkout</a>
+  <a *ngIf="cartItems.length > 0" class="button fancy-button" routerLink="/cart">{{cartItems.length}}<mat-icon>shopping_cart</mat-icon>Checkout</a>
 </div>
 
 <div class="container"
@@ -70,7 +70,7 @@ fxLayoutGap.xs="0">
       <mat-list-item *ngFor="let result of results">
         <h3 matLine style="color: forestgreen;">{{result.part | titlecase}} for {{result.vehicletype}}</h3>
         <p matLine><strong>Model</strong>: {{result.model | titlecase}} {{result.year}}</p>
-        <p matLine><strong>Price</strong>: {{result.price}}</p>
+        <p matLine><strong>Price</strong>: {{result.price | currency:'NGN':'symbol-narrow':'3.0'}}</p>
         <p matLine><strong>Store</strong>: {{result.shopname}}, {{result.address}}</p>
         <p matLine><strong>Phone</strong>: {{result.telnum}}</p>
           <ng-container matLine *ngIf="cartItems.includes(result._id); else showRemoveBtn">

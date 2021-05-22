@@ -56,7 +56,7 @@
               </mat-card-title>
             </mat-card-header>
             <mat-card-content>
-              <p>{{item.part}}, {{item.price}}, {{item.year}}</p>
+              <p>{{item.part}}, {{item.price | currency :'NGN':'symbol-narrow':'3.0'}}, {{item.year}}</p>
             </mat-card-content>
         </div>
         </mat-card>

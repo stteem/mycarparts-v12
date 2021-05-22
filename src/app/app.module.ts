@@ -45,6 +45,7 @@ import { StoreitemComponent } from './storeitem/storeitem.component';
 import { StoreComponent } from './store/store.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { CartComponent } from './cart/cart.component';
 
 
 @NgModule({
@@ -58,7 +59,8 @@ import { environment } from '../environments/environment';
     DashboardComponent,
     ProfileComponent,
     StoreitemComponent,
-    StoreComponent
+    StoreComponent,
+    CartComponent
   ],
   imports: [
     BrowserModule,
