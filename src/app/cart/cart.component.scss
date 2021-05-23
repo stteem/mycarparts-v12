@@ -16,3 +16,13 @@
 .img-div {
     width: 150px;
 }
+
+$qty-btn-size: 35px !default;
+.qty-btn {
+  height: $qty-btn-size;
+  width: $qty-btn-size;
+  border: 1px solid #bd2000;
+  border-radius: 50%;
+  flex-shrink: 0;
+  object-fit: cover;
+}

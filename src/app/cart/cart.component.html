@@ -17,18 +17,20 @@ fxLayoutGap.xs="0">
             <p matLine><strong>Model</strong>: {{cartItem.model | titlecase}} {{cartItem.year}}</p>
             <p matLine><strong>Price</strong>: {{cartItem.price | currency:'NGN':'symbol-narrow':'3.0'}}</p>
             <p matLine><strong>Store</strong>: {{cartItem.shopname}}, {{cartItem.address}}</p>
-            <p matLine><strong>Qty</strong>:<button mat-button-avatar [hidden]="cartItem.qty === 1" (click)="subtractFromQty(cartItem._id, cartItem.qty)">-</button> 
-              {{cartItem.qty}} <button mat-button-avatar (click)="addToQty(cartItem.qty, cartItem._id)">+</button>
+            <p matLine><strong>Qty</strong>: <button class="qty-btn" color="warn" [hidden]="cartItem.qty === 1" (click)="subtractFromQty(cartItem._id, cartItem.qty)">-</button> 
+              {{cartItem.qty}} <button class="qty-btn" color="warn" (click)="addToQty(cartItem.qty, cartItem._id)">+</button>
             </p>
-          <div matLine><strong>Total</strong>: {{cartItem.total | currency:'NGN':'symbol-narrow':'3.0'}}</div>
-          <button style="margin-top: 5px;" matLine mat-button class="add-to-cart" color="warn" (click)="removeFromCart(cartItem._id)">
+          <div matLine><strong>Sub total</strong>: {{cartItem.total | currency:'NGN':'symbol-narrow':'3.0'}}</div>
+          <div matLine style="margin-top: 5px;"><button mat-button class="add-to-cart" color="warn" (click)="removeFromCart(cartItem._id)">
             Remove from cart
-          </button>
+          </button></div>
           <div class="img-div">
             <img src="{{cartItem.imageurl}}" style="width: 100%;" alt="cart item image" /> 
           </div> 
+          <hr>
         </mat-list-item>
         <p matLine *ngIf="totalSum != null"><strong>Total Sum</strong>: {{totalSum | currency:'NGN':'symbol-narrow':'3.0'}}</p>
+        <div matLine *ngIf="cartItems.length != 0"><button mat-button class="enable-color text-floral-white" color="warn">Proceed to Payment</button></div>
     </mat-list>
     
     <div *ngIf="cartItems.length == 0">

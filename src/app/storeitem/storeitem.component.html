@@ -46,6 +46,13 @@
 				</mat-form-field>
 			</p>
 
+			<p>
+				<mat-form-field class="sform-width">
+				  <input matInput formControlName="weight" placeholder="Weight in kg" type="text" pattern="[+0-9]*" required>
+				  <mat-error *ngIf="formErrors.weight">{{formErrors.weight}}</mat-error>
+				</mat-form-field>
+			</p>
+
           <div class="img-div">
             <button type="button" mat-button class="img-btn" color="accent" (click)="onClick()">
               <mat-icon>file_upload</mat-icon>

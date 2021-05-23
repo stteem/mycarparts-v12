@@ -74,9 +74,11 @@ fxLayoutGap.xs="0">
         <p matLine><strong>Store</strong>: {{result.shopname}}, {{result.address}}</p>
         <p matLine><strong>Phone</strong>: {{result.telnum}}</p>
           <ng-container matLine *ngIf="cartItems.includes(result._id); else showRemoveBtn">
-            <button matLine mat-button class="add-to-cart" color="warn" (click)="removeFromCart(result._id)">
-              Remove from cart
-            </button>
+            <div matLine>
+              <button mat-button class="add-to-cart" color="warn" (click)="removeFromCart(result._id)">
+                Remove from cart
+              </button>
+            </div>
           </ng-container>
           <ng-template matLine #showRemoveBtn>
             <button matLine mat-button class="add-to-cart" color="warn" (click)="addToCart(result)">

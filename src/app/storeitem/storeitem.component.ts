@@ -41,6 +41,7 @@ export class StoreitemComponent implements OnInit, OnDestroy {
     'year': '',
     'part': '',
     'price': '',
+    'weight': '',
     'image': ''
   };
 
@@ -65,6 +66,10 @@ export class StoreitemComponent implements OnInit, OnDestroy {
     'price': {
       'required':      'Price is required.',
       'pattern':       'Price must contain only numbers.'
+    },
+    'weight': {
+      'required':      'Weight is required.',
+      'pattern':       'Weight must contain only numbers.'
     },
     'image': {
       'required':      'Image is required.'
@@ -125,6 +130,7 @@ export class StoreitemComponent implements OnInit, OnDestroy {
       year: ['', [Validators.required, Validators.pattern] ],
       part: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30)] ],
       price: ['', [Validators.required, Validators.pattern] ],
+      weight: ['', [Validators.required, Validators.pattern] ],
       image: ['', Validators.required ],
     });
     this.storeitemForm.valueChanges.subscribe(data => this.onValueChanged(data));
