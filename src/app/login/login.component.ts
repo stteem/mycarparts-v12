@@ -19,7 +19,7 @@ import { Location } from '@angular/common';
 export class LoginComponent implements OnInit {
 
   user = {email: '', password: ''};
-  socialuser = {token: ''};
+  socialuser = {name: '', email: '', image: '', token: ''};
   hide = true;
   loginErrMess: string;
   private history: string[] = []
@@ -41,9 +41,9 @@ export class LoginComponent implements OnInit {
 
     public socialSignIn(socialPlatform : string) {
       let socialPlatformProvider;
-      if(socialPlatform == "facebook"){
+      /*if(socialPlatform == "facebook"){
         socialPlatformProvider = FacebookLoginProvider.PROVIDER_ID;
-      }else if(socialPlatform == "google"){
+      }else*/ if(socialPlatform == "google"){
         socialPlatformProvider = GoogleLoginProvider.PROVIDER_ID;
       }
       
@@ -51,9 +51,9 @@ export class LoginComponent implements OnInit {
         (userData) => {
           //console.log(socialPlatform +" sign in data : " , userData);
           // Now sign-in with userData
-          //this.socialuser.name = userData.name;
-          //this.socialuser.email = userData.email;
-          //this.socialuser.image = userData.image;
+          this.socialuser.name = userData.name;
+          this.socialuser.email = userData.email;
+          this.socialuser.image = userData.image;
           this.socialuser.token = userData.idToken;
           //console.log('social user sign in data : ' , this.socialuser); 
           this.loginservice.loginSocialUser(this.socialuser);

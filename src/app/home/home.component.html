@@ -13,7 +13,9 @@
 
         <h2 style="text-align: center;">Find and Compare Spare Parts Prices in Nigeria</h2>
 
-        <p fxLayout="row wrap" fxLayoutGap="4px">
+        <div id="form-div" fxLayout="row wrap"
+             fxLayoutAlign.xs="center"
+             fxLayoutGap="4px">
           <mat-form-field class="form-width" appearance="fill">
             <mat-label>Vehicle Type</mat-label>
             <input matInput type="text" formControlName="vehicletype" name="vehicletype" required>
@@ -40,7 +42,7 @@
             <input matInput type="text" formControlName="city" name="city" required>
           </mat-form-field>
           <button type="submit" mat-button class="search-button text-floral-white" [disabled]="searchForm.invalid" >Search</button>
-        </p>   
+        </div>   
       </form>
     </mat-card> 
   </div>

@@ -1,5 +1,4 @@
-import { Component, OnInit, Input, Output } from '@angular/core';
-import { EventEmitter } from 'events';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CartService } from '../services/cart.service';
 
 
@@ -12,15 +11,16 @@ export class CartComponent implements OnInit {
   cartItems: any;
   cartErrMess: string;
   totalQty: number;
-  totalSum: number;
-
-  //@Input() total: any;
+  totalSum: number;  
+  check_radio: boolean = false;
+  delivery: boolean = false;
 
   constructor(private cartservice: CartService) { }
 
   ngOnInit() {
     this.cartservice.getCart()
     .subscribe(res => {
+      console.log('get cart ', res)
       this.cartItems = res;
       this.calculateTotalQty();
       this.sumTotal();
@@ -98,4 +98,23 @@ export class CartComponent implements OnInit {
     })
   }
 
+  getRadioValue(event, _id) {
+    //console.log('event ',event.value, _id)
+    this.cartservice.updateDeliveryStatus(event.value, _id)
+    .subscribe(res => {
+      this.cartItems[res.index].delivery = res.delivery;
+      this.checkDeliveryMethod();
+      //this.cartItems[res.index].delivery = res.delivery === 'true' ? true : false;
+      //console.log(`event res ${res.index} :`,this.cartItems[res.index].delivery)
+    })
+  }
+
+  checkDeliveryMethod() {
+    const getItem = this.cartItems.filter(e => e.delivery === 'true');
+    if (getItem.length > 0) {
+      return this.delivery = true;
+      //console.log('delivery ',this.delivery)
+    }
+    return this.delivery = false;
+  }
 }

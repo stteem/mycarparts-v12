@@ -8,6 +8,8 @@ export class Order {
     price: number;
     qty: number;
     total: number;
+    delivery: boolean;
+    destination: string;
     shopname: string;
     storeid: string;
     telnum: string;

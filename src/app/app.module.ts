@@ -46,6 +46,8 @@ import { StoreComponent } from './store/store.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { CartComponent } from './cart/cart.component';
+import { MakeBooleanPipe } from './makebool.pipe';
+
 
 
 @NgModule({
@@ -60,7 +62,8 @@ import { CartComponent } from './cart/cart.component';
     ProfileComponent,
     StoreitemComponent,
     StoreComponent,
-    CartComponent
+    CartComponent,
+    MakeBooleanPipe
   ],
   imports: [
     BrowserModule,

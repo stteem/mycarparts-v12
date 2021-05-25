@@ -29,21 +29,27 @@ export class LoginService {
   sendSocialUser(user: any) {
     return this.messageSource.next(user);
   };
+
+  storeUserCredentials(credentials: any) {
+    console.log('storeUserCredentials ', credentials);
+    localStorage.setItem('JWT', JSON.stringify(credentials));
+    this.sendSocialUser(credentials);
+  }
   
 
   loginSocialUser(socialuser: any) {
   
-    console.log('this social ', socialuser);
-  	/*return this.http.post<any>(baseURL + 'api/v1/auth/loginsocial', socialuser)
+    //console.log('this social ', socialuser);
+  	return this.http.post<any>(baseURL + 'api/v1/auth/loginsocial', socialuser)
   	.pipe(map(res => {
       console.log('res', res);
-      this.sendSocialUser(res);
+      this.storeUserCredentials({username: res.firstname, token: res.token, imageurl: res.imageurl});
       //console.log("i've been called ", this.currentMessage );
-    }),catchError(error => this.ProcessHttpmsgService.handleError(error)));*/
+    }),catchError(error => this.ProcessHttpmsgService.handleError(error)));
 
-    return this.http.get<any>(baseURL + 'api/v1/auth/loginsocial').subscribe(res => {
+    /*return this.http.get<any>(baseURL + 'api/v1/auth/loginsocial').subscribe(res => {
       console.log(res);
-    });
+    });*/
   };
 
   /*logIn(user: any): Observable<any> {

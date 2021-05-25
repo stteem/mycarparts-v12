@@ -5,10 +5,6 @@
     background-image: url('../../assets/1st.png');
 }
 
-mat-form-field.form-width {
-    width: 150px;
-}
-
 .search-button{
     background-color: #bd2000; //#a02905;
     width: 99%;
@@ -41,9 +37,71 @@ mat-form-field.form-width {
     width: 100%;
 }
 
+/*mat-form-field.form-width {
+    width: 150px;
+}*/
+
+/*#form-div {
+
+    background-color: yellow;
+}*/
+
+@media(max-width: 320px){
+    mat-form-field.form-width {
+        width: 110px;
+        //background-color: rgb(216, 14, 115);
+    }
+}
+
+
+@media(min-width: 321px){
+    mat-form-field.form-width {
+        width: 130px;
+        //background-color: burlywood;
+    }
+}
+
+@media(min-width: 375px){
+    mat-form-field.form-width {
+        width: 137px;
+        //background-color: rgb(172, 101, 9);
+    }
+    .search-button {
+        width: 98.5%;
+    }
+}
+
+@media(min-width: 400px){
+    mat-form-field.form-width {
+        width: 155px;
+        //background-color: green;
+    }
+}
+
+@media(min-width: 500px){
+    mat-form-field.form-width {
+        width: 120px;
+        //background-color: yellowgreen;
+    }
+    .search-button {
+        width: 370px;
+    }
+}
+
+@media(min-width: 700px){
+    mat-form-field.form-width {
+        width: 106px;
+        background-color: royalblue;
+    }
+    .search-button {
+        width: 99.5%;
+    }
+}
+
 @media(min-width:900px){
     mat-form-field.form-width {
-        width: 135px;
+        width: 130px;
+        background-color: rebeccapurple;
     }
 
     .search-button{
