@@ -1,46 +1,86 @@
 <div class="container"
-fxLayout="column"
-fxLayout.sm="column"
-fxLayout.xs="column"
-fxLayoutAlign.gt-md="space-around center"
-fxLayoutAlign.md="space-around center"
-fxLayoutGap="5px" 
-fxLayoutGap.xs="0">
+  fxLayout="column wrap"
+  fxLayout.sm="column"
+  fxLayout.xs="column"
+  fxLayoutAlign.gt-md="space-around center"
+  fxLayoutAlign.md="space-around center"
+  fxLayoutAlign.xs="left"
+  fxLayoutGap="5px" 
+  fxLayoutGap.xs="0"
+>
   
 
-  <div class="items-div">
-    <mat-list *ngIf="cartItems">
-      <h2 *ngIf="totalQty == 1">Item in cart: {{totalQty}}</h2>
-      <h2 *ngIf="totalQty > 1">Items in cart: {{totalQty}}</h2>
-        <mat-list-item *ngFor="let cartItem of cartItems">
-          <h3 matLine style="color: rgb(29, 29, 29);">{{cartItem.part | titlecase}} for {{cartItem.vehicletype}}</h3>
-            <p matLine><strong>Model</strong>: {{cartItem.model | titlecase}} {{cartItem.year}}</p>
-            <p matLine><strong>Price</strong>: {{cartItem.price | currency:'NGN':'symbol-narrow':'3.0'}}</p>
-            <p matLine><strong>Store</strong>: {{cartItem.shopname}}, {{cartItem.address}}</p>
-            <p matLine><strong>Qty</strong>: <button class="qty-btn" color="warn" [hidden]="cartItem.qty === 1" (click)="subtractFromQty(cartItem._id, cartItem.qty)">-</button> 
+    <div class="items-div" *ngIf="cartItems">
+        <h2 *ngIf="totalQty == 1">Item in cart: {{totalQty}}</h2>
+        <h2 *ngIf="totalQty > 1">Items in cart: {{totalQty}}</h2>
+        <hr>
+        <div *ngFor="let cartItem of cartItems" fxLayout="row wrap" >
+          <div class="cart-items-div">
+            <h3 style="color: rgb(29, 29, 29);">{{cartItem.part | titlecase}} for {{cartItem.vehicletype}}</h3>
+            <p><strong>Model</strong>: {{cartItem.model | titlecase}} {{cartItem.year}}</p>
+            <p><strong>Price</strong>: {{cartItem.price | currency:'NGN':'symbol-narrow':'3.0'}}</p>
+            <p><strong>Store</strong>: {{cartItem.shopname}}, {{cartItem.address}}, {{cartItem.city}}, {{cartItem.state}}</p>
+            <p><strong>Qty</strong>: <button class="qty-btn" color="warn" [hidden]="cartItem.qty === 1" (click)="subtractFromQty(cartItem._id, cartItem.qty)">-</button> 
               {{cartItem.qty}} <button class="qty-btn" color="warn" (click)="addToQty(cartItem.qty, cartItem._id)">+</button>
             </p>
-          <div matLine><strong>Sub total</strong>: {{cartItem.total | currency:'NGN':'symbol-narrow':'3.0'}}</div>
-          <div matLine style="margin-top: 5px;"><button mat-button class="add-to-cart" color="warn" (click)="removeFromCart(cartItem._id)">
-            Remove from cart
-          </button></div>
+            <div fxLayout="column" id="delivery-option"
+              fxLayout.sm="column"
+              fxLayout.xs="column">
+              <p><i>Choose delivery method</i></p>
+              <mat-radio-group aria-label="Select an option">
+                <mat-radio-button class="checkit" (change)="getRadioValue($event, cartItem._id)" value=false >I will pick it up</mat-radio-button>
+                <mat-radio-button class="checkit deliver" (change)="getRadioValue($event, cartItem._id)" value=true >Deliver to me</mat-radio-button>
+              </mat-radio-group>
+          </div>
+            <p><strong>Sub total</strong>: {{cartItem.total | currency:'NGN':'symbol-narrow':'3.0'}}</p>
+            <div style="margin-top: 5px;">
+              <button mat-button class="add-to-cart" color="warn" (click)="removeFromCart(cartItem._id)">
+                Remove from cart
+              </button>
+            </div>
+          </div>
+         
           <div class="img-div">
-            <img src="{{cartItem.imageurl}}" style="width: 100%;" alt="cart item image" /> 
+            <img src="{{cartItem.imageurl}}" style="width: 100%; margin-top: 20px;" alt="cart item image" /> 
           </div> 
-          <hr>
-        </mat-list-item>
+          <div style="width: 100%;"><hr></div>
+          
+        </div>
+        
+      <div>
+        <div>
+          <div *ngIf="cartItems.length > 0">
+            <h3 matLine>Shipping Information</h3>
+            <p id="info"><i>For each item, choose delivery destination in order to calculate shipping cost. 
+              If it's within reach and you would like to pick it yourself, 
+              check the box that says "I will pick up this one myself".</i>
+            </p>
+          </div>
+            
+            <div *ngIf="delivery" style="width: 100%; background-color: brown;">
+              <mat-form-field>
+                <input matInput placeholder="Delivery address" (change)="handleAddressChange($event)"/>
+              </mat-form-field>
+            </div>
+        </div>
+      </div>
+      <div>
         <p matLine *ngIf="totalSum != null"><strong>Total Sum</strong>: {{totalSum | currency:'NGN':'symbol-narrow':'3.0'}}</p>
-        <div matLine *ngIf="cartItems.length != 0"><button mat-button class="enable-color text-floral-white" color="warn">Proceed to Payment</button></div>
-    </mat-list>
-    
-    <div *ngIf="cartItems.length == 0">
-      <h4>You have nothing in your cart, let's go shopping, shall we?</h4>
-      <button matLine mat-button class="add-to-cart" color="warn" routerLink="/home">
-        Navigate to home to search for auto parts
-      </button>
-    </div>
+        <div matLine *ngIf="cartItems.length != 0">
+          <button mat-button class="enable-color text-floral-white" color="warn">
+            Proceed to Payment
+          </button>
+        </div>
+      </div>
+
+      <div *ngIf="cartItems.length == 0">
+        <h4>You have nothing in your cart, let's go shopping, shall we?</h4>
+        <button matLine mat-button class="add-to-cart" color="warn" routerLink="/home">
+          Navigate to home to search for auto parts
+        </button>
+      </div>
       <div *ngIf="cartErrMess">
         <h4>{{cartErrMess}}</h4>
       </div>
-  </div>
+    </div>
 </div>

@@ -22,6 +22,8 @@ export class CartService {
     if (storedOrder == null) {
       item.qty = 1;
       item.total = item.price;
+      item.delivery = false;
+      item.destination = ''
       order.push(item);
       localStorage.setItem('order', JSON.stringify(order));
       const getOrder = JSON.parse(localStorage.getItem('order'));
@@ -32,6 +34,8 @@ export class CartService {
     // Push item to an existing order in local storage.
     item.qty = 1;
     item.total = item.price;
+    item.delivery = false;
+    item.destination = '';
     storedOrder.push(item);
     localStorage.setItem('order', JSON.stringify(storedOrder));
     const getOrder = JSON.parse(localStorage.getItem('order'));
@@ -117,6 +121,19 @@ export class CartService {
     return of({
       qty: newQty, 
       total: newtotal,
+      index: index
+    });
+  }
+
+  updateDeliveryStatus(value: boolean, _id: string): Observable<any> {
+    const getOrders = JSON.parse(localStorage.getItem('order'));
+    const index = getOrders.findIndex(index => index._id === _id);
+    getOrders[index].delivery = value;
+    localStorage.setItem('order', JSON.stringify(getOrders));
+    const getUpdatedOrders = JSON.parse(localStorage.getItem('order'));
+    const newDelivery = getUpdatedOrders[index].delivery;
+    return of({
+      delivery: newDelivery,
       index: index
     });
   }

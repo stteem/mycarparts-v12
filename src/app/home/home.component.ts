@@ -175,6 +175,8 @@ export class HomeComponent implements OnInit {
             && Object.is(element.year.toLowerCase(), this.search.year.toLowerCase()) && Object.is(element.part.toLowerCase(), this.search.part.toLowerCase())) {
               element.shopname = item.shopname;
               element.address = item.address;
+              element.city = item.lga;
+              element.state = item.state;
               element.telnum = item.telnum;
               element.storeid = item._id;
               /*element.price = new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN' }).format(element.price.toFixed(2));*/
