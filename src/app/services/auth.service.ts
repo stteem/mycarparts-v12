@@ -27,6 +27,7 @@ export class AuthenticationService {
   tokenKey = 'JWT';
   isAuthenticated: Boolean = false;
   username: Subject<string> = new Subject<string>();
+  logged: Subject<boolean> = new Subject<boolean>();
   authToken: string = undefined;
 
   constructor(private http: HttpClient,
@@ -55,7 +56,7 @@ export class AuthenticationService {
 
   loadUserCredentials() {
     const credentials = JSON.parse(localStorage.getItem(this.tokenKey));
-    console.log('loadUserCredentials ', credentials);
+    //console.log('loadUserCredentials ', credentials);
     if (credentials && credentials.username !== undefined) {
       this.useCredentials(credentials);
       if (this.authToken) {
@@ -72,6 +73,7 @@ export class AuthenticationService {
 
   useCredentials(credentials: any) {
     this.isAuthenticated = true;
+    this.logged.next(true);
     this.sendUsername(credentials.username);
     this.authToken = credentials.token;
   }
@@ -108,6 +110,10 @@ export class AuthenticationService {
 
   isLoggedIn(): Boolean {
     return this.isAuthenticated;
+  }
+
+  loggedIn(): Observable<boolean> {
+    return this.logged.asObservable();
   }
 
   getUsername(): Observable<string> {

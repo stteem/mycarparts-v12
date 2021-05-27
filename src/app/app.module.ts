@@ -46,7 +46,6 @@ import { StoreComponent } from './store/store.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { CartComponent } from './cart/cart.component';
-import { MakeBooleanPipe } from './makebool.pipe';
 
 
 
@@ -63,7 +62,6 @@ import { MakeBooleanPipe } from './makebool.pipe';
     StoreitemComponent,
     StoreComponent,
     CartComponent,
-    MakeBooleanPipe
   ],
   imports: [
     BrowserModule,

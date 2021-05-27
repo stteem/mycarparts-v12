@@ -1,6 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Observable, of} from 'rxjs';
 import { Order } from '../shared/order';
+import { Catchment } from '../shared/catchment';
+
+import { HttpClient } from '@angular/common/http';
+import { catchError, map } from 'rxjs/operators';
+import { Router } from '@angular/router';
+import { baseURL } from '../shared/baseurl';
+import { ProcessHttpmsgService } from './process-httpmsg.service';
+
+
 
 interface OrderId {
   _id: string;
@@ -11,7 +20,8 @@ interface OrderId {
 })
 export class CartService {
 
-  constructor() { }
+  constructor(private http: HttpClient,
+      private processHTTPMsgService: ProcessHttpmsgService) { }
 
   addItemToCart(item: Order): Observable<OrderId>  {
     const order = [];
@@ -125,7 +135,61 @@ export class CartService {
     });
   }
 
-  updateDeliveryStatus(value: boolean, _id: string): Observable<any> {
+  updateDeliveryStatus(value: string, _id: string): Observable<any> {
+
+    console.log('value ', value)
+
+    if (value == "true") {
+
+      const get_shipping = JSON.parse(localStorage.getItem('shipping'));
+      console.log('get shipping ', get_shipping);
+
+      if (get_shipping == null) {
+
+        // Fetch shipping address if no shipping is set
+        return this.http.get(baseURL + 'api/v1/auth/users/shipping_address')
+
+        .pipe( map(res => {
+
+          console.log('pipe res ',res); 
+          localStorage.setItem('shipping', JSON.stringify(res[0].shipping_address));
+          
+          const getOrders = JSON.parse(localStorage.getItem('order'));
+
+          const index = getOrders.findIndex(index => index._id === _id);
+          getOrders[index].delivery = value;
+
+          localStorage.setItem('order', JSON.stringify(getOrders));
+
+          const shipping_address = JSON.parse(localStorage.getItem('shipping'));
+          console.log('get address ', shipping_address)
+          const getUpdatedOrders = JSON.parse(localStorage.getItem('order'));
+          const newDelivery = getUpdatedOrders[index].delivery;
+
+          return {
+            delivery: newDelivery,
+            index: index,
+            shipping: shipping_address
+          };
+        }),
+        catchError(error => this.processHTTPMsgService.handleError(error)));
+      }
+      else{
+        const shipping_address = JSON.parse(localStorage.getItem('shipping'));
+        const getOrders = JSON.parse(localStorage.getItem('order'));
+        const index = getOrders.findIndex(index => index._id === _id);
+        getOrders[index].delivery = value;
+        localStorage.setItem('order', JSON.stringify(getOrders));
+        const getUpdatedOrders = JSON.parse(localStorage.getItem('order'));
+        const newDelivery = getUpdatedOrders[index].delivery;
+        return of({
+          delivery: newDelivery,
+          index: index,
+          shipping: shipping_address
+        });
+      }
+    }
+    
     const getOrders = JSON.parse(localStorage.getItem('order'));
     const index = getOrders.findIndex(index => index._id === _id);
     getOrders[index].delivery = value;
@@ -136,6 +200,70 @@ export class CartService {
       delivery: newDelivery,
       index: index
     });
+  }
+
+  getShippingAddress(): Observable<any> {
+    const shipping_address = JSON.parse(localStorage.getItem('shipping'));
+    if (shipping_address == null) {
+      return of([]);
+    }
+    return of(shipping_address);
+  }
+
+  postShippingAddress(): Observable<any> {
+    return of()
+  } 
+
+  calculateDelivery(value, item, weight) {
+    var rate: number;
+    switch (value == "true" && weight <= 5) {
+      case item.state == item.destinationState :
+      case item.city == item.destinationCity :
+        return rate = 1000;
+        
+      case item.state == item.destinationState :
+      case item.city !== item.destinationCity:
+        return rate = 1200;
+        
+        case item.state == "Lagos" : 
+        case item.state !== item.destinationState : 
+        case Catchment.lagos.includes(item.destinationState.toLowerCase()):
+        return rate = 2000;
+        
+        case item.state == "Abia" : 
+        case item.state !== item.destinationState : 
+        case Catchment.abia.includes(item.destinationState.toLowerCase()):
+        return rate = 2000;
+        
+        case item.state == "Anambra" : 
+        case item.state !== item.destinationState : 
+        case Catchment.anambra.includes(item.destinationState.toLowerCase()):
+        return rate = 2000;
+        
+        case item.state == "Imo" : 
+        case item.state !== item.destinationState : 
+        case Catchment.imo.includes(item.destinationState.toLowerCase()):
+        return rate = 2000;
+        
+        case item.state == "Akwa Ibom" : 
+        case item.state !== item.destinationState : 
+        case Catchment['akwa ibom'].includes(item.destinationState.toLowerCase()):
+        return rate = 2000;
+        
+        case item.state == "Cross River" : 
+        case item.state !== item.destinationState : 
+        case Catchment['cross river'].includes(item.destinationState.toLowerCase()):
+        return rate = 2000;
+        
+        case item.state == "Rivers" : 
+        case item.state !== item.destinationState : 
+        case Catchment.rivers.includes(item.destinationState.toLowerCase()):
+        return rate = 2000;
+        
+      default:
+        return rate = 2500;
+        
+    }
   }
 
 }

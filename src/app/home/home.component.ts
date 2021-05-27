@@ -47,9 +47,9 @@ export class HomeComponent implements OnInit {
 
   validationMessages = {
     'vehicletype': {
-      'required':      'Shop count is required.',
-      'minlength':     'Shop count must be at least 2 characters long.',
-      'maxlength':     'Shop count cannot be more than 25 characters long.'
+      'required':      'Vehicle type is required.',
+      'minlength':     'Vehicle type must be at least 2 characters long.',
+      'maxlength':     'Vehicle type cannot be more than 25 characters long.'
     },
     'model': {
       'required':      'Model is required.'
@@ -64,7 +64,7 @@ export class HomeComponent implements OnInit {
       'maxlength':     'Part cannot be more than 55 characters long.'
     },
     'state': {
-      'required':      'State number is required.',
+      'required':      'State is required.',
     },
     'city': {
       'required':      'City is required.',

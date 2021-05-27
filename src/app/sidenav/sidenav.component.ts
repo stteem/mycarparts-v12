@@ -35,7 +35,6 @@ export class SidenavComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit() {
     this.subscription = this.loginservice.currentMessage.subscribe(user => this.socialuser = user);
-    console.log('sidenav social user ', this.socialuser);
     Promise.resolve().then(() => {
       this.authService.loadUserCredentials();
     })

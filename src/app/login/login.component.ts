@@ -86,7 +86,7 @@ export class LoginComponent implements OnInit {
     .subscribe(res => {
       if (res.success) {
         this.dialogRef.close(res.success);
-        this.back();
+        //this.back();
       } else {
         console.log(res);
         //this.loginErrMess = res.errMsg;
