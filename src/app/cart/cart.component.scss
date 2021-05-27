@@ -82,3 +82,17 @@ $qty-btn-size: 35px !default;
         width: 150px;
     }
 }
+
+.delivery-form {
+    width: 100%;
+}
+
+.spacer {
+    margin-top: 10px;
+}
+
+@media(min-width: 700px){
+    .spacer {
+        float: right;
+    }
+}
