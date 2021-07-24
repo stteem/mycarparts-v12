@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SearchService } from '../services/search.service';
 import { CartService } from '../services/cart.service';
 import { Subscription } from 'rxjs';
-//import { CheckcartPipe } from '../checkcart.pipe';
 
 
 @Component({

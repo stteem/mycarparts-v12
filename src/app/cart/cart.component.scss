@@ -21,6 +21,7 @@ $qty-btn-size: 35px !default;
   border-radius: 50%;
   flex-shrink: 0;
   object-fit: cover;
+  //font-size:1.5em;
 }
 
 .shipping {
@@ -95,4 +96,17 @@ $qty-btn-size: 35px !default;
     .spacer {
         float: right;
     }
+}
+
+mat-card {
+    position: relative;
+    border-radius: 4px;
+}
+
+.edit {
+    position: absolute;
+    top: 4px;
+    right: 3px;
+    color: #000;
+    //font-size: 1.5em;
 }

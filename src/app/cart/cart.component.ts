@@ -4,7 +4,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthenticationService } from '../services/auth.service';
 import { MatDialog } from '@angular/material';
 import { LoginComponent } from '../login/login.component';
-import { Observable, of } from 'rxjs';
+import NaijaStates from 'naija-state-local-government';
+import { Address } from '../shared/shipping_address';
+import { e } from '@angular/core/src/render3';
 
 @Component({
   selector: 'app-cart',
@@ -14,6 +16,7 @@ import { Observable, of } from 'rxjs';
 export class CartComponent implements OnInit {
 
   deliveryForm: FormGroup;
+  shippingAddress: Address;
   cartItems: any;
   cartErrMess: string;
   totalQty: number;
@@ -22,8 +25,12 @@ export class CartComponent implements OnInit {
 
   delivery: boolean = false;
   shipping: any;
+  shippingAddressErrMess: string;
 
   loggedIn: boolean = false;
+
+  states = NaijaStates.states();
+  lgas: String[] = [];
 
 
   @ViewChild('dform') deliveryFormDirective;
@@ -74,7 +81,7 @@ export class CartComponent implements OnInit {
         address: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(25)] ],
         lga: ['', Validators.required ],
         state: ['', Validators.required ],
-        save: [''],
+        can_save: [''],
       });
       this.deliveryForm.valueChanges.subscribe(data => this.onValueChanged(data));
       this.onValueChanged(); //reset form validation messages
@@ -100,9 +107,7 @@ export class CartComponent implements OnInit {
       }
     }
 
-    onSubmit(){
-
-    }
+   
 
   ngOnInit() {
     this.cartservice.getCart()
@@ -119,6 +124,13 @@ export class CartComponent implements OnInit {
       console.log('logged in res ', res)
       res == true ? this.loggedIn = true : this.loggedIn = false;
     })
+  }
+
+    // Populate lga array after state is chosen
+  onChangeState(val: any) {
+    this.lgas = [];
+    let lgArray = NaijaStates.lgas(val);
+    return this.lgas.push(lgArray.lgas);
   }
 
   calculateTotalQty() {
@@ -145,7 +157,6 @@ export class CartComponent implements OnInit {
     });
     if(total.length !== 0){
       const sum = total.reduce((a, b) => a + b)
-      //console.log('reduced sum',sum)
       return this.totalSum = sum;
     }
     return this.totalSum = null;
@@ -160,6 +171,7 @@ export class CartComponent implements OnInit {
         //console.log('cart ', cart)
         this.calculateTotalQty();
         this.sumTotal();
+        this.checkDeliveryMethod();
       }
     })
   }
@@ -191,6 +203,7 @@ export class CartComponent implements OnInit {
       if (res.delivery == "true") {
         this.cartItems[res.index].delivery = res.delivery;
         this.shipping = res.shipping;
+        console.log('shipping res ',this.shipping)
         this.checkDeliveryMethod();
       }
       else{
@@ -211,11 +224,33 @@ export class CartComponent implements OnInit {
   getShipping() {
     this.cartservice.getShippingAddress()
     .subscribe(res => {
+      console.log('shipping ',res)
       return this.shipping = res;
     })
   }
 
-  postShipping() {
+  editDeliveryAddress(e) {
+    //e.preventDefault();
+    console.log('clicked edit')
+  }
+
+  onSubmit(){
+    this.shippingAddress = this.deliveryForm.value;
+    console.log('delivery ',this.shippingAddress);
+    this.cartservice.postShippingAddress(this.shippingAddress)
+    .subscribe(res => {
+      console.log('saved address ',res);
+      this.shipping = res;
+      this.shippingAddress = null;
+    },
+    error => {
+      this.shippingAddressErrMess = <any>error;
+    });
+
+    this.deliveryFormDirective.resetForm();
+  }
+
+  postOrder() {
 
   }
 
