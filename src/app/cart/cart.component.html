@@ -20,18 +20,21 @@
             <p><strong>Model</strong>: {{cartItem.model | titlecase}} {{cartItem.year}}</p>
             <p><strong>Price</strong>: {{cartItem.price | currency:'NGN':'symbol-narrow':'3.0'}}</p>
             <p><strong>Store</strong>: {{cartItem.shopname}}, {{cartItem.address}}, {{cartItem.city}}, {{cartItem.state}}</p>
-            <p><strong>Qty</strong>: <button class="qty-btn" color="warn" [hidden]="cartItem.qty === 1" (click)="subtractFromQty(cartItem._id, cartItem.qty)">-</button> 
-              {{cartItem.qty}} <button class="qty-btn" color="warn" (click)="addToQty(cartItem.qty, cartItem._id)">+</button>
+            <p><strong>Qty</strong>: <button mat-icon-button class="qty-btn" color="warn" *ngIf="cartItem.qty > 1" (click)="subtractFromQty(cartItem._id, cartItem.qty)">-</button> 
+              {{cartItem.qty}} <button mat-icon-button class="qty-btn" color="warn" (click)="addToQty(cartItem.qty, cartItem._id)">+</button>
             </p>
             <div fxLayout="column" id="delivery-option"
               fxLayout.sm="column"
               fxLayout.xs="column">
-              <p><i>Choose delivery method in order to calculate shipping cost.
-                The default is "I will pick it up". If this store is in another city or state, 
-                and you want it shipped to you, check the option that says "Deliver to me".</i></p>
               <mat-radio-group aria-label="Select an option" [(ngModel)]="cartItem.delivery">
                 <mat-radio-button class="checkit" (change)="getRadioValue($event, cartItem._id)" value=false >I will pick it up</mat-radio-button>
                 <mat-radio-button class="checkit deliver" (change)="getRadioValue($event, cartItem._id)" value=true >Deliver to me</mat-radio-button>
+                <span 
+                  matTooltip="Choose delivery method in order to calculate shipping cost.
+                  The default is 'I will pick it up'. If this store is in another city or state, 
+                  and you want it shipped to you, check the option that says 'Deliver to me'."
+                  aria-label="Button that displays a tooltip when focused or hovered over"
+                  class="material-icons md-18">help</span>
               </mat-radio-group>
           </div>
             <p><strong>Sub total</strong>: {{cartItem.total | currency:'NGN':'symbol-narrow':'3.0'}}</p>
@@ -50,37 +53,57 @@
         </div>
 
         <div style="width: 100%;" *ngIf="delivery === true && shipping.length > 0">
-          <h3 matLine>Shipping Information</h3>
+          <h3 matLine>My Delivery Address<span matTooltip="This is the address your purchases will be shipped to, you can edit
+            it if you've changed addresses, by clicking on the pencil icon on the card below."
+            aria-label="Button that displays a tooltip when focused or hovered over"
+            class="material-icons md-18">help</span></h3>
           <mat-card>
-            <p>{{shipping.address}}</p>
-            <p>{{shipping.lga}}</p>
-            <p>{{shipping.state}}</p>
+            <p><strong>Address</strong>: {{shipping[0].address}}</p>
+            <p><strong>L.G.A.</strong>: {{shipping[0].lga}}</p>
+            <p><strong>State</strong>: {{shipping[0].state}}</p>
+            <button class="edit" mat-icon-button (click)="editDeliveryAddress($event)">
+              <span matTooltip="Click to edit your delivery address" class="material-icons mat-tooltip-panel-above">edit</span>
+            </button>
           </mat-card>
         </div>
               
         <div style="width: 100%;" *ngIf="delivery === true && shipping.length == 0">
           <div>
-            <h3 matLine>Shipping Information</h3>
-            <p id="info"><i>Add delivery address, where you'd like your purchase delivered.
-              You are shown this form because you chose the option that says "Deliver to me", 
-              or because you do not have this info in our database already, or because you are not
-              logged in. </i>
-            </p>
+            <h3 matLine>Shipping Information <span matTooltip="Add delivery address, where you'd like your purchase delivered.
+              You are shown this form because you chose the option that says 'Deliver to me', or because you do not have this info 
+              in our database already, or because you are not logged in."
+            aria-label="Button that displays a tooltip when focused or hovered over"
+            class="material-icons md-18">help</span></h3>
           </div>
           <form [formGroup]="deliveryForm" novalidate #dform="ngForm" (ngSubmit)="onSubmit()">
             <mat-form-field class="delivery-form" appearance="fill">
-              <mat-label>Address</mat-label>
-              <input matInput type="text" formControlName="address" name="address"  placeholder="Delivery address" required />
+              <mat-label>State</mat-label>
+              <mat-select placeholder="Select the state your shop is located" (valueChange)="onChangeState($event)" formControlName="state" required>
+                <mat-option *ngFor="let state of states" [value]="state">
+                {{ state }}
+                </mat-option>
+              </mat-select>   
+              <mat-error *ngIf="formErrors.state">{{formErrors.state}}</mat-error>        
             </mat-form-field>
             <mat-form-field class="delivery-form" appearance="fill">
               <mat-label>L.G.A</mat-label>
-              <input matInput type="text" formControlName="lga" name="lga" placeholder="L.G.A" required />
+              <mat-select placeholder="Select local government" formControlName="lga" required>
+                <mat-option *ngFor="let lga of lgas[0]" [value]="lga">
+                {{ lga }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="formErrors.lga">{{formErrors.lga}}</mat-error>
             </mat-form-field>
             <mat-form-field class="delivery-form" appearance="fill">
-              <mat-label>State</mat-label>
-              <input matInput type="text" formControlName="state" name="state" placeholder="State" required />
+              <mat-label>Address</mat-label>
+              <input matInput type="text" formControlName="address" name="address"  placeholder="Delivery address" required />
+              <mat-error *ngIf="formErrors.address">{{formErrors.address}}</mat-error>
             </mat-form-field>
-            <input type="checkbox" formControlName="save" name="save" /> &nbsp; <label>Save address for future use</label>
+            <mat-checkbox formControlName="can_save" name="can_save">Save address for future use</mat-checkbox><span matTooltip="Your shipping address
+              will be saved for future use if you check the box, else it will only be used for this purchase. It is recommended that you check
+              the box in order to save time during future purchases."
+              aria-label="Button that displays a tooltip when focused or hovered over"
+              class="material-icons md-18">help</span>
             <button mat-button type="submit" class="add-to-cart spacer" color="warn" [disabled]="deliveryForm.invalid" >Save address</button>
           </form>
         </div>

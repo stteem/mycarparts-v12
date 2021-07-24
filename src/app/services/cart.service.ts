@@ -8,6 +8,8 @@ import { catchError, map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { baseURL } from '../shared/baseurl';
 import { ProcessHttpmsgService } from './process-httpmsg.service';
+import { Address } from '../shared/shipping_address';
+import { resolveDefinition } from '@angular/core/src/view/util';
 
 
 
@@ -210,13 +212,19 @@ export class CartService {
     return of(shipping_address);
   }
 
-  postShippingAddress(): Observable<any> {
-    return of()
+  postShippingAddress(address: Address): Observable<Address> {
+    return this.http.post<Address>(baseURL + 'api/v1/auth/users/shipping_address', address)
+      .pipe( map(res => {
+        console.log('post shipping res ',res);
+        localStorage.setItem('shipping', JSON.stringify(res[0].shipping_address));
+        return res[0].shipping_address;
+      }),
+      catchError(error => this.processHTTPMsgService.handleError(error)));
   } 
 
-  calculateDelivery(value, item, weight) {
+  calculateDelivery(value, item    ) {
     var rate: number;
-    switch (value == "true" && weight <= 5) {
+    switch (value == "true" /*&& weight <= 5*/) {
       case item.state == item.destinationState :
       case item.city == item.destinationCity :
         return rate = 1000;
