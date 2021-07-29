@@ -4,10 +4,10 @@
     <h1 class="example-app-name">My Car Parts</h1>
     <span class="flex-spacer"></span>
 
-    <div *ngIf="socialuser.image || username" style="margin-right: 20px;">
+    <div *ngIf="username" style="margin-right: 20px;">
         <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
-          <a *ngIf="username">{{username}}</a>
-            <img *ngIf="socialuser.image" class="avatar" src={{socialuser.image}} alt="image">
+          <a style="text-decoration: none; color: whitesmoke;" *ngIf="username">{{username}}</a>
+            <!--<img *ngIf="socialuser.image" class="avatar" src={{socialuser.image}} alt="image">-->
           <mat-icon>more_vert</mat-icon>
         </button>
         <mat-menu #menu="matMenu">
@@ -18,7 +18,7 @@
         </mat-menu>
     </div>
     
-    <div class="signin" [hidden]="socialuser.image || username">
+    <div class="signin" [hidden]="username">
       <a routerLink="/signup" routerLinkActive="active">Sign up</a>
       <a mat-button (click)="openLoginForm()">Sign in</a>
     </div>

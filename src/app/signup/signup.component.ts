@@ -3,9 +3,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Signup } from '../shared/signup';
 import { SignupService } from '../services/signup.service';
 import { LoginComponent } from '../login/login.component';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 
-import { AuthService, FacebookLoginProvider, GoogleLoginProvider } from 'angular-6-social-login';
+//import { AuthService, FacebookLoginProvider, GoogleLoginProvider } from 'angular-6-social-login';
 import { LoginService } from '../services/login.service';
 
 
@@ -70,7 +70,7 @@ export class SignupComponent implements OnInit {
   constructor(private fb: FormBuilder,
     private signupservice: SignupService,
     private loginservice: LoginService,
-    private socialAuthService: AuthService,
+    //private socialAuthService: AuthService,
     public dialog: MatDialog) { 
     this.createForm();
   }

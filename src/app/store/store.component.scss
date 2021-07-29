@@ -2,28 +2,36 @@
     width: 100%;
 }
 .store-card {
+    position: relative;
     margin-bottom: 10px;
 }
 
-@media (min-width:900px){
+.store-div {
+    margin-top: 20px;
+}
+
+@media (min-width:700px){
     .store-card {
         width: 300px;
     }
 }
 
-.more-vert > button {
-    float: right;
+.more-vert {
+    position: absolute;
+    width: 10%;
+    top: 0;
+    right: 5px;
 }
 
 .pos {
     position: fixed;
 }
 
-.store-d {
-    width: 100%;
-    padding: 20px;
-    position: fixed;
-    z-index: 2;
+.store-header-div {
+    //width: 100%;
+    //padding: 20px;
+    //position: fixed;
+    //z-index: 2;
     background-color: white;
 }
 

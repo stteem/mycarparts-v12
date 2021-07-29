@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { StoreitemComponent } from '../storeitem/storeitem.component';
 import { DashboardService } from '../services/dashboard.service';
 import { StoreitemsService } from '../services/storeitems.service';
@@ -32,7 +32,18 @@ export class StoreComponent implements OnInit, OnDestroy {
     }
 
   ngOnInit() {
-    this.route.paramMap.subscribe(params => {
+     this.getStoreItems();
+
+    //this.storeitemsService.getCurrentItem().subscribe(res => this.items.unshift(res));
+
+    //this.storeitemsService.submitItem.subscribe(res => this.items = res);
+    console.log('store id', this.store_id)
+  }
+
+  getStoreItems() {
+    this.storeErrMess = null;
+    console.log('fetching store items....')
+     this.route.paramMap.subscribe(params => {
       this.store_id = params.get("id");
       this.storeitemsService.getItems(params.get("id"))
       .subscribe(items => {
@@ -41,11 +52,6 @@ export class StoreComponent implements OnInit, OnDestroy {
       },
       error => this.storeErrMess = <any>error);
     });
-
-    //this.storeitemsService.getCurrentItem().subscribe(res => this.items.unshift(res));
-
-    //this.storeitemsService.submitItem.subscribe(res => this.items = res);
-    console.log('store id', this.store_id)
   }
 
 

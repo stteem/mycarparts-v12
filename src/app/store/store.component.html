@@ -1,9 +1,9 @@
-<div class="store-d" fxFlex>
+<div class="container store-header-div margins">
   <div fxLayout="row" class="store">
     <h3>My Store</h3>
     <span class="flex-spacer"></span>
     <button style="height: fit-content;" class="enable-color text-floral-white" mat-button (click)="openStoreForm()">
-      Add items to this store
+      Add an item to this store
       </button>
   </div>
   <hr>
@@ -34,7 +34,6 @@
     fxLayoutGap="50px" 
     *ngIf="items?.length > 0">
         <mat-card fxLayout="column" class="store-card" *ngFor="let item of items">
-          <span class="flex-spacer"></span>
           <div class="more-vert">
             <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
               <mat-icon>more_vert</mat-icon>
@@ -49,14 +48,10 @@
             </mat-menu>
           </div>
           <div class="store-div">
-            <img style="width: 100%;" src="{{item.imageurl}}" alt={{item.vehicletype}}>
-            <mat-card-header>
-              <mat-card-title>
-                <h3>{{item.vehicletype | uppercase}} {{item.model}}</h3>
-              </mat-card-title>
-            </mat-card-header>
             <mat-card-content>
-              <p>{{item.part}}, {{item.price | currency :'NGN':'symbol-narrow':'3.0'}}, {{item.year}}</p>
+              <img style="width: 100%;" src="{{item.imageurl}}" alt={{item.vehicletype}}>
+                <p style="margin-top: 15px;">{{item.part | titlecase}} for {{item.vehicletype | titlecase}} {{item.model | titlecase}} {{item.year}}</p>
+                <p>{{item.price | currency :'NGN':'symbol-narrow':'3.0'}}</p>
             </mat-card-content>
         </div>
         </mat-card>
@@ -64,11 +59,12 @@
     <div [hidden]="items || storeErrMess">
       <mat-spinner class="spinner"></mat-spinner><h4>Loading . . . Please Wait</h4>
     </div>
-    <div *ngIf="items?.length == 0">
+    <div *ngIf="items?.length == 0 && !storeErrMess">
       <p>You don't have any items in your store yet.</p>
     </div>
     <div *ngIf="storeErrMess">
-      <h4>{{storeErrMess}}</h4>
+      <h6 style="color: red;">{{storeErrMess}}</h6>
+      <button mat-button class="enable-color text-floral-white" type="button" (click)="getStoreItems()">Fetch store items</button>
     </div>
 </div>
 

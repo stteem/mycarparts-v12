@@ -17,7 +17,7 @@ import { SignupGuardService } from './services/signup-guard.service';
 import { DashboardService } from './services/dashboard.service';
 
 import { HttpClientModule } from '@angular/common/http';
-import { getAuthServiceConfigs } from './auth-service.config';
+//import { getAuthServiceConfigs } from './auth-service.config';
 import { ProcessHttpmsgService } from './services/process-httpmsg.service';
 import { AuthenticationService } from './services/auth.service';
 import { StoreitemsService } from './services/storeitems.service';
@@ -31,10 +31,7 @@ import { baseURL } from './shared/baseurl';
 
 
 
-import {
-  SocialLoginModule,
-  AuthServiceConfig
-} from "angular-6-social-login";
+//import { SocialLoginModule, AuthServiceConfig } from "angular-6-social-login";
 
 import 'hammerjs';
 import { CreateshopComponent } from './createshop/createshop.component';
@@ -69,7 +66,7 @@ import { CartComponent } from './cart/cart.component';
     AppRoutingModule,
     BrowserAnimationsModule,
     MaterialModules,
-    SocialLoginModule,
+//SocialLoginModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [
@@ -101,10 +98,10 @@ import { CartComponent } from './cart/cart.component';
       provide: 'BaseURL', 
       useValue: baseURL
     },
-    {
+    /*{
       provide: AuthServiceConfig,
       useFactory: getAuthServiceConfigs
-    }
+    }*/
    ],
   entryComponents: [SidenavComponent, LoginComponent, StoreitemComponent],
   bootstrap: [AppComponent, SidenavComponent]

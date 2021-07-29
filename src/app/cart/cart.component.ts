@@ -2,11 +2,11 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { CartService } from '../services/cart.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthenticationService } from '../services/auth.service';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { LoginComponent } from '../login/login.component';
 import NaijaStates from 'naija-state-local-government';
 import { Address } from '../shared/shipping_address';
-import { e } from '@angular/core/src/render3';
+//import { e } from '@angular/core/src/render3';
 
 @Component({
   selector: 'app-cart',

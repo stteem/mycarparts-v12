@@ -20,9 +20,10 @@ export class StoreitemsService {
 
   submitItem(storeId: string, item: Item, file: File){
     console.log('store service file', file)
+    console.log('store service items', item)
     const form: any = new FormData();
     form.append('image', file);
-    form.append('item', item);
+    //form.append('item', item);
     //form.append('storeid', storeId);
     for ( var key in item ) {
       form.append(key, item[key]);
@@ -32,7 +33,6 @@ export class StoreitemsService {
     .pipe(catchError(this.ProcessHttpmsgService.handleError));
 
   }
-
   
   getItems(store_id: string): Observable<Item[]> {
     return this.http.get<Item[]>(baseURL + 'api/v1/shop/' + store_id + '/items')

@@ -34,7 +34,7 @@ export class AuthenticationService {
     private processHTTPMsgService: ProcessHttpmsgService,
     private router: Router) { }
 
-  checkJWTtoken() {
+  checkSomething() {
     this.http.get<JWTResponse>(baseURL + 'api/v1/auth/checkJWTtoken')
     .subscribe(res => {
       console.log('JWT Token Valid: ', res);
@@ -46,12 +46,34 @@ export class AuthenticationService {
     });
   }
 
+  checkJWTtoken() {
+    this.http.get<JWTResponse>(baseURL + 'api/v1/auth/checkJWTtoken')
+    .subscribe({
+      next: (res) => {
+        console.log('JWT Token Valid: ', res);
+        this.sendUsername(res.user);
+      },
+      error: (e) => {
+        console.error('JWT Token invalid: ', e);
+        this.destroyUserCredentials();
+      },
+      complete: () => console.info('complete')
+    })
+  }
+
   sendUsername(name: string) {
     this.username.next(name);
   }
 
   clearUsername() {
     this.username.next(undefined);
+  }
+
+  useCredentials(credentials: any) {
+    this.isAuthenticated = true;
+    this.logged.next(true);
+    this.sendUsername(credentials.username);
+    this.authToken = credentials.token;
   }
 
   loadUserCredentials() {
@@ -71,24 +93,6 @@ export class AuthenticationService {
     this.useCredentials(credentials);
   }
 
-  useCredentials(credentials: any) {
-    this.isAuthenticated = true;
-    this.logged.next(true);
-    this.sendUsername(credentials.username);
-    this.authToken = credentials.token;
-  }
-
-  destroyUserCredentials() {
-    this.authToken = undefined;
-    this.clearUsername();
-    this.isAuthenticated = false;
-    localStorage.removeItem(this.tokenKey);
-  }
-
-  signUp() {
-
-  }
-
   logIn(user: any): Observable<any> {
     return this.http.post<AuthResponse>(baseURL + 'api/v1/auth/logincustom', user)
       .pipe( map(res => {
@@ -101,6 +105,29 @@ export class AuthenticationService {
           return of({errMsg: error.error.status});
        })*/
        catchError(error => this.processHTTPMsgService.handleError(error)));
+  }
+
+  checkCart():void {
+    const shipping = localStorage.getItem('shipping');
+    const order = localStorage.getItem('order');
+
+    if (order) {
+      localStorage.removeItem('order');
+    }
+    if (shipping) {
+      localStorage.removeItem('shipping');
+    } 
+    else {
+      return;
+    }
+  }
+
+  destroyUserCredentials() {
+    this.authToken = undefined;
+    this.clearUsername();
+    this.isAuthenticated = false;
+    localStorage.removeItem(this.tokenKey);
+    this.checkCart();
   }
 
   logOut() {

@@ -1,5 +1,4 @@
 .mheader {
-    top: -2;
     height: 500px;
     width: 100%;
     background-image: url('../../assets/1st.png');
@@ -45,6 +44,11 @@
 
     background-color: yellow;
 }*/
+
+#search-ermess {
+    text-align: center;
+    color: red;
+}
 
 @media(max-width: 320px){
     mat-form-field.form-width {

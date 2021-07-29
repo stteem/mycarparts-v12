@@ -1,5 +1,8 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "cli": {
+    "analytics": "b00f9bb3-6b70-4121-942d-b9a66e26484c"
+  },
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
@@ -9,9 +12,7 @@
       "projectType": "application",
       "prefix": "app",
       "schematics": {
-        "@schematics/angular:component": {
-          "styleext": "scss"
-        }
+        "@schematics/angular:component": {}
       },
       "targets": {
         "build": {
@@ -28,9 +29,13 @@
               "src/manifest.json"
             ],
             "styles": [
+              "node_modules/font-awesome/scss/font-awesome.scss",
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "allowedCommonJsDependencies": [
+              "naija-state-local-government"
+           ]
           },
           "configurations": {
             "production": {

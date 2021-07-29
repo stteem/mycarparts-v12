@@ -7,6 +7,14 @@
     width: 100%;
 }
 
+.item-in-cart {
+    margin-top: 50px;
+}
+
+mat-radio-group span, #delivery-address span, #shipping-info, #save-address {
+    cursor: pointer;
+}
+
 @media(min-width: 900px) {
     .items-div {
         width: 60%;
@@ -51,6 +59,10 @@ $qty-btn-size: 35px !default;
 /*.origin {
     margin-bottom: 10px;
 }*/
+
+.md-18 {
+    font-size: medium !important;
+}
 
 #info {
     font-size: 12px;

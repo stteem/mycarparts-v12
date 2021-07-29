@@ -9,129 +9,128 @@
   fxLayoutGap.xs="0"
 >
   
-
-    <div class="items-div" *ngIf="cartItems && loggedIn == true">
-        <h2 *ngIf="totalQty == 1">Item in cart: {{totalQty}}</h2>
-        <h2 *ngIf="totalQty > 1">Items in cart: {{totalQty}}</h2>
-        <hr>
-        <div *ngFor="let cartItem of cartItems" fxLayout="row wrap" >
-          <div class="cart-items-div">
-            <h3 style="color: rgb(29, 29, 29);">{{cartItem.part | titlecase}} for {{cartItem.vehicletype}}</h3>
-            <p><strong>Model</strong>: {{cartItem.model | titlecase}} {{cartItem.year}}</p>
-            <p><strong>Price</strong>: {{cartItem.price | currency:'NGN':'symbol-narrow':'3.0'}}</p>
-            <p><strong>Store</strong>: {{cartItem.shopname}}, {{cartItem.address}}, {{cartItem.city}}, {{cartItem.state}}</p>
-            <p><strong>Qty</strong>: <button mat-icon-button class="qty-btn" color="warn" *ngIf="cartItem.qty > 1" (click)="subtractFromQty(cartItem._id, cartItem.qty)">-</button> 
-              {{cartItem.qty}} <button mat-icon-button class="qty-btn" color="warn" (click)="addToQty(cartItem.qty, cartItem._id)">+</button>
-            </p>
-            <div fxLayout="column" id="delivery-option"
-              fxLayout.sm="column"
-              fxLayout.xs="column">
-              <mat-radio-group aria-label="Select an option" [(ngModel)]="cartItem.delivery">
-                <mat-radio-button class="checkit" (change)="getRadioValue($event, cartItem._id)" value=false >I will pick it up</mat-radio-button>
-                <mat-radio-button class="checkit deliver" (change)="getRadioValue($event, cartItem._id)" value=true >Deliver to me</mat-radio-button>
-                <span 
-                  matTooltip="Choose delivery method in order to calculate shipping cost.
-                  The default is 'I will pick it up'. If this store is in another city or state, 
-                  and you want it shipped to you, check the option that says 'Deliver to me'."
-                  aria-label="Button that displays a tooltip when focused or hovered over"
-                  class="material-icons md-18">help</span>
-              </mat-radio-group>
-          </div>
-            <p><strong>Sub total</strong>: {{cartItem.total | currency:'NGN':'symbol-narrow':'3.0'}}</p>
-            <div style="margin-top: 5px;">
-              <button mat-button class="add-to-cart" color="warn" (click)="removeFromCart(cartItem._id)">
-                Remove from cart
-              </button>
-            </div>
-          </div>
-         
-          <div class="img-div">
-            <img src="{{cartItem.imageurl}}" style="width: 100%; margin-top: 20px;" alt="cart item image" /> 
-          </div> 
-          <div style="width: 100%;"><hr></div>
-          
+  <div class="items-div" *ngIf="cartItems && loggedIn == true">
+      <h2 class="item-in-cart" *ngIf="totalQty == 1">Item in cart: {{totalQty}}</h2>
+      <h2 class="item-in-cart" *ngIf="totalQty > 1">Items in cart: {{totalQty}}</h2>
+      <hr>
+      <div *ngFor="let cartItem of cartItems" fxLayout="row wrap" >
+        <div class="cart-items-div">
+          <p style="color: rgb(29, 29, 29);"><strong>{{cartItem.part | titlecase}} for {{cartItem.vehicletype}}</strong></p>
+          <p><strong>Model</strong>: {{cartItem.model | titlecase}} {{cartItem.year}}</p>
+          <p><strong>Price</strong>: {{cartItem.price | currency:'NGN':'symbol-narrow':'3.0'}}</p>
+          <p><strong>Store</strong>: {{cartItem.shopname | titlecase}}, {{cartItem.address | titlecase}}, {{cartItem.city | titlecase}}, {{cartItem.state | titlecase}}</p>
+          <p><strong>Qty</strong>: <button mat-icon-button class="qty-btn" color="warn" *ngIf="cartItem.qty > 1" (click)="subtractFromQty(cartItem._id, cartItem.qty)">-</button> 
+            {{cartItem.qty}} <button mat-icon-button class="qty-btn" color="warn" (click)="addToQty(cartItem.qty, cartItem._id)">+</button>
+          </p>
+          <div fxLayout="column" id="delivery-option"
+            fxLayout.sm="column"
+            fxLayout.xs="column">
+            <mat-radio-group aria-label="Select an option" [(ngModel)]="cartItem.delivery">
+              <mat-radio-button class="checkit" (change)="getRadioValue($event, cartItem._id)" value=false >I will pick it up</mat-radio-button>
+              <mat-radio-button class="checkit deliver" (change)="getRadioValue($event, cartItem._id)" value=true >Deliver to me</mat-radio-button>
+              <span 
+                matTooltip='Choose delivery method in order to calculate shipping cost.
+                The default is "I will pick it up". If this store is in another city or state, 
+                and you want it shipped to you, choose "Deliver to me".'
+                aria-label="Button that displays a tooltip when focused or hovered over"
+                class="material-icons md-18">help</span>
+            </mat-radio-group>
         </div>
-
-        <div style="width: 100%;" *ngIf="delivery === true && shipping.length > 0">
-          <h3 matLine>My Delivery Address<span matTooltip="This is the address your purchases will be shipped to, you can edit
-            it if you've changed addresses, by clicking on the pencil icon on the card below."
-            aria-label="Button that displays a tooltip when focused or hovered over"
-            class="material-icons md-18">help</span></h3>
-          <mat-card>
-            <p><strong>Address</strong>: {{shipping[0].address}}</p>
-            <p><strong>L.G.A.</strong>: {{shipping[0].lga}}</p>
-            <p><strong>State</strong>: {{shipping[0].state}}</p>
-            <button class="edit" mat-icon-button (click)="editDeliveryAddress($event)">
-              <span matTooltip="Click to edit your delivery address" class="material-icons mat-tooltip-panel-above">edit</span>
+          <p><strong>Sub total</strong>: {{cartItem.total | currency:'NGN':'symbol-narrow':'3.0'}}</p>
+          <div style="margin-top: 5px;">
+            <button mat-button class="add-to-cart" color="warn" (click)="removeFromCart(cartItem._id)">
+              Remove from cart
             </button>
-          </mat-card>
-        </div>
-              
-        <div style="width: 100%;" *ngIf="delivery === true && shipping.length == 0">
-          <div>
-            <h3 matLine>Shipping Information <span matTooltip="Add delivery address, where you'd like your purchase delivered.
-              You are shown this form because you chose the option that says 'Deliver to me', or because you do not have this info 
-              in our database already, or because you are not logged in."
-            aria-label="Button that displays a tooltip when focused or hovered over"
-            class="material-icons md-18">help</span></h3>
           </div>
-          <form [formGroup]="deliveryForm" novalidate #dform="ngForm" (ngSubmit)="onSubmit()">
-            <mat-form-field class="delivery-form" appearance="fill">
-              <mat-label>State</mat-label>
-              <mat-select placeholder="Select the state your shop is located" (valueChange)="onChangeState($event)" formControlName="state" required>
-                <mat-option *ngFor="let state of states" [value]="state">
-                {{ state }}
-                </mat-option>
-              </mat-select>   
-              <mat-error *ngIf="formErrors.state">{{formErrors.state}}</mat-error>        
-            </mat-form-field>
-            <mat-form-field class="delivery-form" appearance="fill">
-              <mat-label>L.G.A</mat-label>
-              <mat-select placeholder="Select local government" formControlName="lga" required>
-                <mat-option *ngFor="let lga of lgas[0]" [value]="lga">
-                {{ lga }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="formErrors.lga">{{formErrors.lga}}</mat-error>
-            </mat-form-field>
-            <mat-form-field class="delivery-form" appearance="fill">
-              <mat-label>Address</mat-label>
-              <input matInput type="text" formControlName="address" name="address"  placeholder="Delivery address" required />
-              <mat-error *ngIf="formErrors.address">{{formErrors.address}}</mat-error>
-            </mat-form-field>
-            <mat-checkbox formControlName="can_save" name="can_save">Save address for future use</mat-checkbox><span matTooltip="Your shipping address
-              will be saved for future use if you check the box, else it will only be used for this purchase. It is recommended that you check
-              the box in order to save time during future purchases."
-              aria-label="Button that displays a tooltip when focused or hovered over"
-              class="material-icons md-18">help</span>
-            <button mat-button type="submit" class="add-to-cart spacer" color="warn" [disabled]="deliveryForm.invalid" >Save address</button>
-          </form>
         </div>
         
-      <div>
-        <p matLine *ngIf="totalSum != null"><strong>Total Sum</strong>: {{totalSum | currency:'NGN':'symbol-narrow':'3.0'}}</p>
-        <div matLine *ngIf="cartItems.length != 0">
-          <button mat-button class="enable-color text-floral-white" >
-            Proceed to Payment
-          </button>
-        </div>
+        <div class="img-div">
+          <img src="{{cartItem.imageurl}}" style="width: 100%; margin-top: 20px;" alt="cart item image" /> 
+        </div> 
+        <div style="width: 100%;"><hr></div>
+        
       </div>
 
-      <div *ngIf="cartItems.length == 0">
-        <h4>You have nothing in your cart, let's go shopping, shall we?</h4>
-        <button matLine mat-button class="add-to-cart" color="warn" routerLink="/home">
-          Navigate to home to search for auto parts
+      <div style="width: 100%;" *ngIf="delivery === true && shipping.length > 0">
+        <h5 id="delivery-address" matLine>My Delivery Address<span matTooltip="This is the address your purchases will be shipped to, you can edit
+          it if you've changed addresses, by clicking on the pencil icon at the top right."
+          aria-label="Button that displays a tooltip when focused or hovered over"
+          class="material-icons md-18">help</span></h5>
+        <mat-card style="margin-top: 20px;">
+          <p><strong>Address</strong>: {{shipping[0].address}}</p>
+          <p><strong>L.G.A.</strong>: {{shipping[0].lga}}</p>
+          <p><strong>State</strong>: {{shipping[0].state}}</p>
+          <button class="edit" mat-icon-button (click)="editDeliveryAddress($event)">
+            <span matTooltip="Click to edit your delivery address" class="material-icons mat-tooltip-panel-above">edit</span>
+          </button>
+        </mat-card>
+      </div>
+            
+      <div style="width: 100%;" *ngIf="delivery === true && shipping.length == 0">
+        <div>
+          <h3 matLine>Shipping Address <span id="shipping-info" matTooltip="Add delivery address, where you'd like your purchase delivered.
+            You are shown this form because you chose the option that says 'Deliver to me', or because you do not have this info 
+            in our database already, or because you are not logged in."
+          aria-label="Button that displays a tooltip when focused or hovered over"
+          class="material-icons md-18">help</span></h3>
+        </div>
+        <form [formGroup]="deliveryForm" novalidate #dform="ngForm" (ngSubmit)="onSubmit()">
+          <mat-form-field class="delivery-form" appearance="fill">
+            <mat-label>State</mat-label>
+            <mat-select placeholder="Select the state your shop is located" (valueChange)="onChangeState($event)" formControlName="state" required>
+              <mat-option *ngFor="let state of states" [value]="state">
+              {{ state }}
+              </mat-option>
+            </mat-select>   
+            <mat-error *ngIf="formErrors.state">{{formErrors.state}}</mat-error>        
+          </mat-form-field>
+          <mat-form-field class="delivery-form" appearance="fill">
+            <mat-label>L.G.A</mat-label>
+            <mat-select placeholder="Select local government" formControlName="lga" required>
+              <mat-option *ngFor="let lga of lgas[0]" [value]="lga">
+              {{ lga }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="formErrors.lga">{{formErrors.lga}}</mat-error>
+          </mat-form-field>
+          <mat-form-field class="delivery-form" appearance="fill">
+            <mat-label>Address</mat-label>
+            <input matInput type="text" formControlName="address" name="address"  placeholder="Delivery address" required />
+            <mat-error *ngIf="formErrors.address">{{formErrors.address}}</mat-error>
+          </mat-form-field>
+          <mat-checkbox formControlName="can_save" name="can_save">Save address for future use</mat-checkbox><span id="save-address" matTooltip="Your shipping address
+            will be saved for future use if you check the box, else it will only be used for this purchase. It is recommended that you check
+            the box in order to save time during future purchases."
+            aria-label="Button that displays a tooltip when focused or hovered over"
+            class="material-icons md-18">help</span>
+          <button mat-button type="submit" class="add-to-cart spacer" color="warn" [disabled]="deliveryForm.invalid" >Submit address</button>
+        </form>
+      </div>
+      
+    <div style="margin-top: 50px; margin-bottom: 100px;">
+      <p matLine *ngIf="totalSum != null"><strong>Total Sum</strong>: {{totalSum | currency:'NGN':'symbol-narrow':'3.0'}}</p>
+      <div matLine *ngIf="cartItems.length != 0">
+        <button mat-button class="enable-color text-floral-white" >
+          Proceed to Payment
         </button>
       </div>
-      <div *ngIf="cartErrMess">
-        <h4>{{cartErrMess}}</h4>
-      </div>
     </div>
 
-    <div *ngIf="loggedIn == false">
-      <h4>Sorry, but at this point you must log in before you can continue</h4>
-      <button matLine mat-button class="add-to-cart" color="warn" (click)="login()">
-        Login to view your cart
+    <div style="margin-top: 100px;" *ngIf="cartItems.length == 0">
+      <h5>You have nothing in your cart, let's go shopping, shall we?</h5>
+      <button style="margin-top: 20px;" matLine mat-button class="add-to-cart" color="warn" routerLink="/home">
+        Navigate home to search for auto parts
       </button>
     </div>
+    <div *ngIf="cartErrMess">
+      <h4>{{cartErrMess}}</h4>
+    </div>
+  </div>
+
+  <div *ngIf="loggedIn == false">
+    <h5 style="margin-top: 100px;">Sorry, at this point you must log in before you can continue</h5>
+    <button style="margin-top: 20px;" matLine mat-button class="add-to-cart" color="warn" (click)="login()">
+      Login to view your cart
+    </button>
+  </div>
 </div>

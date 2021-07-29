@@ -16,6 +16,9 @@ export class ProcessHttpmsgService {
     if (error.error instanceof ErrorEvent) {
       errMsg = error.error.message;
     }
+    if (error.status == 401 && error.statusText == "Unauthorized") {
+      errMsg = `${error.statusText}, please sign in.`;
+    }
     if (error.status == 404) {
       errMsg = "Nothing was found";
     }

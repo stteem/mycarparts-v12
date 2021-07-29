@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialogRef} from '@angular/material';
-import { AuthService, FacebookLoginProvider, GoogleLoginProvider } from 'angular-6-social-login';
+import { MatDialogRef} from '@angular/material/dialog';
+//import { AuthService, FacebookLoginProvider, GoogleLoginProvider } from 'angular-6-social-login';
 import { LoginService } from '../services/login.service';
 import { Router, NavigationEnd } from '@angular/router';
 import { AuthenticationService } from '../services/auth.service';
@@ -26,8 +26,8 @@ export class LoginComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<LoginComponent>,
-    private loginservice: LoginService,
-    private socialAuthService: AuthService,
+    //private loginservice: LoginService,
+    //private socialAuthService: AuthService,
     private router: Router,
     private authService: AuthenticationService,
     private location: Location
@@ -39,11 +39,11 @@ export class LoginComponent implements OnInit {
       });
     }
 
-    public socialSignIn(socialPlatform : string) {
+    /*public socialSignIn(socialPlatform : string) {
       let socialPlatformProvider;
-      /*if(socialPlatform == "facebook"){
+      if(socialPlatform == "facebook"){
         socialPlatformProvider = FacebookLoginProvider.PROVIDER_ID;
-      }else*/ if(socialPlatform == "google"){
+      }else if(socialPlatform == "google"){
         socialPlatformProvider = GoogleLoginProvider.PROVIDER_ID;
       }
       
@@ -60,7 +60,7 @@ export class LoginComponent implements OnInit {
           this.dialogRef.close();
         }
       );
-    }
+    }*/
 
 
   ngOnInit() {

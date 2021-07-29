@@ -1,4 +1,4 @@
-<div class="container"
+<div class="container margins"
      fxLayout="column"
      fxLayoutGap="10px">
 
@@ -14,10 +14,10 @@
   </div>
   <div fxFlex *ngIf="shops"> 
     <div *ngIf="shops?.length > 1">
-      <h4>Your Stores</h4>
+      <h4>My Stores</h4>
     </div>
     <div [hidden]="shops?.length > 1 || shops?.length == 0">
-      <h4>Your Store</h4>
+      <h4>My Store</h4>
     </div>
   </div>
 
@@ -47,11 +47,11 @@
           <mat-icon class="mat-icon-store">store</mat-icon>
           <mat-card-header>
             <mat-card-title>
-              <h3>{{shop.shopname | uppercase}}</h3>
+              <h3>{{shop.shopname | titlecase}}</h3>
             </mat-card-title>
           </mat-card-header>
           <mat-card-content>
-            <p>{{shop.address}}, {{shop.lga}}, {{shop.state}}</p>
+            <p>{{shop.address | titlecase}}, {{shop.lga | titlecase}}, {{shop.state | titlecase}}</p>
             <button class="enable-color text-floral-white" mat-button [routerLink]="['/store', shop._id]">Enter store</button>
           </mat-card-content>
       </div>
@@ -65,8 +65,8 @@
   </div>
   
   <div *ngIf="errMess">
-    <h4>{{errMess}}</h4>
-    <button type="button" class="enable-color text-floral-white" mat-button (click)="tryAgain()">Try again</button>
+    <h5>{{errMess}}</h5>
+    <button type="button" class="enable-color text-floral-white" mat-button (click)="tryAgain()">Fetch stores</button>
   </div>
 
 </div>

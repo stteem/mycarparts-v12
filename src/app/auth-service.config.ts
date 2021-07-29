@@ -1,4 +1,4 @@
-import {
+/*import {
     AuthServiceConfig,
     GoogleLoginProvider,
     FacebookLoginProvider,
@@ -20,4 +20,4 @@ export function getAuthServiceConfigs() {
   );
   return config;
 }
-  
+*/

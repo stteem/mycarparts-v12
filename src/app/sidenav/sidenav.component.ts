@@ -1,6 +1,6 @@
 import {MediaMatcher} from '@angular/cdk/layout';
-import {ChangeDetectorRef, Component, OnInit, AfterViewInit, OnDestroy} from '@angular/core';
-import { MatDialog } from '@angular/material';
+import {ChangeDetectorRef, Component, OnInit, OnDestroy} from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { LoginComponent } from '../login/login.component';
 import { LoginService } from "../services/login.service";
 import { AuthenticationService } from '../services/auth.service';
@@ -11,7 +11,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './sidenav.component.html',
   styleUrls: ['./sidenav.component.scss'],
 })
-export class SidenavComponent implements OnInit, AfterViewInit, OnDestroy {
+export class SidenavComponent implements OnInit, OnDestroy {
   mobileQuery: MediaQueryList;
   socialuser: Object;
   subscription: Subscription;
@@ -44,9 +44,6 @@ export class SidenavComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  ngAfterViewInit() {
-    
-  }
 
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);

@@ -1,4 +1,4 @@
-<div class="container"
+<div class="container margins"
   fxLayout="column"
   fxLayoutGap="10px">
 
@@ -54,7 +54,7 @@
     <div [hidden]="signupForm.invalid">
       <button type="submit" mat-button class='signup-btn enable-color text-floral-white'>Sign Up</button>
     </div>
-    <div class="or">
+    <!--<div class="or">
       <p style="text-align: center;">Or</p>
     </div>
       
@@ -63,7 +63,7 @@
     </p>
     <p>
       <button mat-button disabled class="social-butn social-butn-f text-floral-white" type="button" (click)="socialSignIn('facebook')"><span class="fa fa-facebook fa-lg" aria-hidden="true"></span> Continue with Facebook</button>
-    </p>
+    </p>-->
   </form>
   <div [hidden]="showForm || response || signupErrMess">
     <h4>Submitting form... please wait</h4>
