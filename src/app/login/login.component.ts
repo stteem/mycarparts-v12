@@ -86,6 +86,9 @@ export class LoginComponent implements OnInit {
     .subscribe(res => {
       if (res.success) {
         this.dialogRef.close(res.success);
+
+        // TO DO
+        // Navigate to home or dashboard if url param is /signup
         //this.back();
       } else {
         console.log(res);

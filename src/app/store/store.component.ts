@@ -43,14 +43,16 @@ export class StoreComponent implements OnInit, OnDestroy {
   getStoreItems() {
     this.storeErrMess = null;
     console.log('fetching store items....')
-     this.route.paramMap.subscribe(params => {
+    this.route.paramMap.subscribe(params => {
       this.store_id = params.get("id");
       this.storeitemsService.getItems(params.get("id"))
-      .subscribe(items => {
-        this.items = items;
-        console.log('items ', this.items)
-      },
-      error => this.storeErrMess = <any>error);
+      .subscribe({
+        next: items => {
+          this.items = items;
+          console.log('items ', this.items)
+        },
+        error: error => this.storeErrMess = <any>error
+      });
     });
   }
 

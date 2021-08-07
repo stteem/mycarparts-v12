@@ -26,9 +26,12 @@ import { CartService } from './services/cart.service';
 import { AuthInterceptor, UnauthorizedInterceptor } from './services/auth.interceptor';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
 
+import { StoreModule } from '@ngrx/store';
+import { searchReducer } from './state/search.reducer';
 
 import { baseURL } from './shared/baseurl';
 
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 
 //import { SocialLoginModule, AuthServiceConfig } from "angular-6-social-login";
@@ -67,6 +70,12 @@ import { CartComponent } from './cart/cart.component';
     BrowserAnimationsModule,
     MaterialModules,
 //SocialLoginModule,
+    StoreModule.forRoot({ search: searchReducer}),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25, // Retains last 25 states
+      logOnly: environment.production, // Restrict extension to log-only mode
+      autoPause: true, // Pauses recording actions and state changes when the extension window is not open
+    }),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [

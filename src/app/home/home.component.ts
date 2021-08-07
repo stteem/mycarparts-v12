@@ -4,6 +4,10 @@ import { SearchService } from '../services/search.service';
 import { CartService } from '../services/cart.service';
 import { Subscription } from 'rxjs';
 
+import { Store, select } from '@ngrx/store';
+import { selectSearchResult } from '../state/search.selectors';
+import { retrieveSearch } from 'app/state/search.action';
+
 
 @Component({
   selector: 'app-home',
@@ -22,6 +26,8 @@ export class HomeComponent implements OnInit {
   add = true;
   remove = false;
   isShown: boolean = false;
+
+  searchResult$ = this.store.pipe(select(selectSearchResult));
 
 
   search = {
@@ -73,12 +79,13 @@ export class HomeComponent implements OnInit {
 
   constructor(private fb: FormBuilder,
     private searchservice: SearchService,
-    private cartservice: CartService) { 
+    private cartservice: CartService,
+    private store: Store) { 
       this.createForm();
   }
 
   ngOnInit() {
-    
+    console.log('store result ', this.searchResult$)
     // If a search is done, show items already in the cart
     this.cartservice.getCartItems().subscribe(res => {
       if ( res != null) {
@@ -155,8 +162,10 @@ export class HomeComponent implements OnInit {
     this.showForm = false;
     this.search = this.searchForm.value;
     //console.log('Search: ', this.search);
+    //this.store.dispatch(searchParts(this.search));
     this.searchservice.searchStores(this.search)
-    .subscribe(res => {
+    .subscribe({
+      next: (res) => {
 
       // Search result initialized to empty array if already populated
       this.results = [];
@@ -198,11 +207,18 @@ export class HomeComponent implements OnInit {
       })
       console.log('filtered results', this.results)
       //this.searchFormDirective.resetForm();
+
     },
-    error => {
+    error: (error) => {
       console.log('search error ', error);
       this.showForm = true;
       this.searchErrMess = <any>error;
+    },
+    complete: () => {
+      // Dispatch result to store for memoization, simply known as caching
+      this.store.dispatch(retrieveSearch(this.results));
+      console.log('dispatch complete')
+    }
     });
   }
 }

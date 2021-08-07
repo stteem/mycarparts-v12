@@ -73,11 +73,12 @@ fxLayoutGap.xs="0">
         <h3 matLine style="color: forestgreen;">{{result.part | titlecase}} for {{result.vehicletype}}</h3>
         <p matLine><strong>Model</strong>: {{result.model | titlecase}} {{result.year}}</p>
         <p matLine><strong>Price</strong>: {{result.price | currency:'NGN':'symbol-narrow':'3.0'}}</p>
-        <p matLine><strong>Store</strong>: {{result.shopname}}, {{result.address}}</p>
+        <p matLine><strong>Store</strong>: {{result.shopname | titlecase}}</p>
+        <p matLine><strong>Address</strong>: {{result.address | titlecase}}, {{result.city | titlecase}}, {{result.state | titlecase}}</p>
         <p matLine><strong>Phone</strong>: {{result.telnum}}</p>
           <ng-container matLine *ngIf="cartItems.includes(result._id); else showRemoveBtn">
             <div matLine>
-              <button mat-button class="add-to-cart" color="warn" (click)="removeFromCart(result._id)">
+              <button mat-button class="remove-from-cart" color="warn" (click)="removeFromCart(result._id)">
                 Remove from cart
               </button>
             </div>
