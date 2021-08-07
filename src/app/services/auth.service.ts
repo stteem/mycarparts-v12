@@ -94,6 +94,7 @@ export class AuthenticationService {
   }
 
   logIn(user: any): Observable<any> {
+    console.log('baseUrl ',baseURL)
     return this.http.post<AuthResponse>(baseURL + 'api/v1/auth/logincustom', user)
       .pipe( map(res => {
         console.log('pipe res ',res);
