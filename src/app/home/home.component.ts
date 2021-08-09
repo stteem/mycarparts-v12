@@ -134,6 +134,7 @@ export class HomeComponent implements OnInit {
 
 
   addToCart(item) {
+    console.log('home item ',item)
     this.cartservice.addItemToCart(item)
     .subscribe(res => {
       this.cartItems.push(res);
