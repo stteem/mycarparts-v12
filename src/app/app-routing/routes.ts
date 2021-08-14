@@ -15,7 +15,7 @@ export const routes: Routes = [
   { path: 'sidenav', component: SidenavComponent},
   { path: 'home',  component: HomeComponent },
   { path: 'createshop',  component: CreateshopComponent, canActivate: [AuthGuard] },
-  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard]},
+  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard], data: {title: 'Dashboard of life', routeTags: ['busines']},},
   { path: 'store/:id', component: StoreComponent, canActivate: [AuthGuard]},
   { path: 'storeitem', component: StoreitemComponent, canActivate: [AuthGuard]},
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard]},

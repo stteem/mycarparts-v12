@@ -1,9 +1,10 @@
-import { Search, Result } from './search.model';
+import { Result } from './search.model';
+import { SearchForm } from "app/shared/searchform";
+
 
 export interface SearchState {
-    search: Search;
-}
-
-export interface SearchResultState {
-    result: ReadonlyArray<Result>;
+    search: {
+        searchkeys: SearchForm;
+        result: ReadonlyArray<Result>;
+    }
 }

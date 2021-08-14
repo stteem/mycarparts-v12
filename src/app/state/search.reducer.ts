@@ -1,11 +1,18 @@
 import { createReducer, on, Action, State } from '@ngrx/store';
 
-import { retrieveSearch } from './search.action';
-import { Result } from './search.model';
+import { searchParts, retrieveSearch } from './search.action';
 
-export const initialState: ReadonlyArray<Result> = [];
+export const initialState = { 
+  searchkeys: {}, 
+  result: []
+};
 
 export const searchReducer = createReducer(
   initialState,
-  on(retrieveSearch, (state, { result }) => [result])
+  on(searchParts, (state, { search }) => {
+    return {...state, searchkeys: search};
+  }),
+  on(retrieveSearch, (state, { result }) => {
+    return {...state, result: result};
+  })
 );

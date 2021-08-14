@@ -26,12 +26,16 @@ import { CartService } from './services/cart.service';
 import { AuthInterceptor, UnauthorizedInterceptor } from './services/auth.interceptor';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
 
+import { RouteConfigModule } from '@this-dot/route-config';
+
 import { StoreModule } from '@ngrx/store';
 import { searchReducer } from './state/search.reducer';
 
 import { baseURL } from './shared/baseurl';
 
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { EffectsModule } from '@ngrx/effects';
+import { SearchEffects } from './effects/search.effects';
 
 
 //import { SocialLoginModule, AuthServiceConfig } from "angular-6-social-login";
@@ -69,8 +73,10 @@ import { CartComponent } from './cart/cart.component';
     AppRoutingModule,
     BrowserAnimationsModule,
     MaterialModules,
-//SocialLoginModule,
+    //SocialLoginModule,
+    RouteConfigModule.forRoot(),
     StoreModule.forRoot({ search: searchReducer}),
+    EffectsModule.forRoot([SearchEffects]),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states
       logOnly: environment.production, // Restrict extension to log-only mode

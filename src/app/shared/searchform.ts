@@ -1,6 +1,7 @@
 export class SearchForm {
 	vehicletype: string;
-	year: number;
+	model: string;
+	year: string;
 	part: string;
 	state: string;
 	city: string;
