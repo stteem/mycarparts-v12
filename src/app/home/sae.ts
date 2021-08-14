@@ -2,12 +2,15 @@ import { Component, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SearchService } from '../services/search.service';
 import { CartService } from '../services/cart.service';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 
 import { Store, select } from '@ngrx/store';
-//import { selectSearchResultState, selectSearchKeysState } from '../state/search.selectors';
-import { retrieveSearch } from 'app/state/search.action';
+import { selectSearchCollection, selectSearchKeysState } from '../state/search.selectors';
+import { searchParts, retrieveSearch } from 'app/state/search.action';
+import { SearchState } from 'app/state/search.state';
 
+import { SearchForm } from 'app/shared/searchform';
+import { Result, Items } from 'app/state/search.model';
 
 @Component({
   selector: 'app-home',
@@ -18,7 +21,7 @@ import { retrieveSearch } from 'app/state/search.action';
 export class HomeComponent implements OnInit {
   
   searchForm: FormGroup;
-  results: any;
+  results;
   searchErrMess: string;
   showForm = true;
   cartItems: any = [];
@@ -27,17 +30,6 @@ export class HomeComponent implements OnInit {
   remove = false;
   isShown: boolean = false;
 
-  //searchResult$ = this.store.pipe(select(selectSearchResultState));
-
-
-  search = {
-    vehicletype: '', 
-    model: '',
-    year: '', 
-    part: '',
-    state: '',
-    city:''
-  };
 
 
   @ViewChild('searchform') searchFormDirective;
@@ -80,12 +72,14 @@ export class HomeComponent implements OnInit {
   constructor(private fb: FormBuilder,
     private searchservice: SearchService,
     private cartservice: CartService,
-    private store: Store) { 
+    private store: Store<SearchState>) { 
       this.createForm();
   }
 
+
   ngOnInit() {
-    //console.log('store result ', this.searchResult$)
+    this.showResult();
+    
     // If a search is done, show items already in the cart
     this.cartservice.getCartItems().subscribe(res => {
       if ( res != null) {
@@ -93,6 +87,41 @@ export class HomeComponent implements OnInit {
           this.cartItems.push(element);
         });
         console.log('cart items 2 ',this.cartItems);
+      }
+    })
+  }
+
+  showResult() {
+    this.store.select(selectSearchCollection).subscribe((res) => {
+      //console.log('result ',res);
+      let result = [];
+      if (res.result.length > 0) {
+        res.result.map((item) => {
+          console.log('item ', item)
+          for (let i = 0; i < item.items.length; i++) {
+            const element = item.items[i];
+            if(Object.is(element.vehicletype.toLowerCase(), res.searchkeys.vehicletype.toLowerCase())  && Object.is(element.model.toLowerCase(), res.searchkeys.model.toLowerCase())
+              && Object.is(element.year.toLowerCase(), res.searchkeys.year.toLowerCase()) && Object.is(element.part.toLowerCase(), res.searchkeys.part.toLowerCase())) {
+                
+              let newElement = {
+                ...element,
+                shopname : item.shopname,
+                address : item.address,
+                city : item.lga,
+                state : item.state,
+                telnum : item.telnum,
+                storeid : item._id
+              } 
+                /*element.price = new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN' }).format(element.price.toFixed(2));*/
+                //console.log('newElement ',newElement);
+                
+                result.push(newElement);
+                this.results = result;
+                console.log('this results ', this.results)
+            }
+          }
+          
+        })
       }
     })
   }
@@ -154,61 +183,30 @@ export class HomeComponent implements OnInit {
   }
 
 
-
   onSubmit() {
 
     // Error message initialized to null if already populated
     this.searchErrMess = null;
 
     this.showForm = false;
-    this.search = this.searchForm.value;
-    //this.store.dispatch(searchParts(this.search));
-    this.searchservice.searchStores(this.search)
-    .subscribe({
-      next: (res) => {
+    const search: SearchForm = {
+      vehicletype: this.searchForm.value.vehicletype, 
+      model: this.searchForm.value.model,
+      year: this.searchForm.value.year, 
+      part: this.searchForm.value.part,
+      state: this.searchForm.value.state,
+      city: this.searchForm.value.city
+    };
+    console.log('search ',search)
+    //this.search = this.searchForm.value;
+    this.store.dispatch(searchParts({search}));
 
-      // Search result initialized to empty array in case it's already populated
-      this.results = [];
-
-      console.log('search result ',res);
-      // The search result returns a matched store object with all store items in the items array.
-      // The for loop takes each mapped store and loops through its items array to find the searched item.
-      // Isn't the most ideal, would have liked to perform that task server side, but that implementation 
-      // would not lend itself.
-      res.map((item) => {
-        //console.log('item ', item)
-        for (let i = 0; i < item.items.length; i++) {
-          const element = item.items[i];
-          if(Object.is(element.vehicletype.toLowerCase(), this.search.vehicletype.toLowerCase())  && Object.is(element.model.toLowerCase(), this.search.model.toLowerCase())
-            && Object.is(element.year.toLowerCase(), this.search.year.toLowerCase()) && Object.is(element.part.toLowerCase(), this.search.part.toLowerCase())) {
-              element.shopname = item.shopname;
-              element.address = item.address;
-              element.city = item.lga;
-              element.state = item.state;
-              element.telnum = item.telnum;
-              element.storeid = item._id;
-              /*element.price = new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN' }).format(element.price.toFixed(2));*/
-              console.log('pushed ',element.price);
-              this.results.push(element);
-          }
-          
-        }
-        
+    setTimeout(() => {
+      this.store.select(selectSearchKeysState).subscribe((keys) => {
+        console.log('keys ',keys);
       })
-      console.log('filtered results', this.results)
-      //this.searchFormDirective.resetForm();
-
-    },
-    error: (error) => {
-      this.showForm = true;
-      this.searchErrMess = <any>error;
-    },
-    complete: () => {
-      // Dispatch result to store for memoization, simply known as caching
-      //this.store.dispatch(retrieveSearch(this.results));
-      console.log('complete')
-    }
-    });
+    }, 2000);
+    
   }
 }
 
