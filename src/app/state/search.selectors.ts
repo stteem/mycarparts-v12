@@ -5,15 +5,9 @@ import { SearchForm } from "app/shared/searchform";
 
 
 
-export const selectSearchKeysState = createSelector(
-    (state: SearchState) => state.search.searchkeys,
-    (searchkeys: SearchForm) => searchkeys
-);
+export const selectSearchKeysState = (state: SearchState) => state.search.searchkeys;
 
-export const selectSearchResultState = createSelector(
-    (state: SearchState) => state.search.result,
-    (result: ReadonlyArray<Result>) => result
-);
+export const selectSearchResultState = (state: SearchState) => state.search.result;
 
 /*export const selectSearchResultState = createFeatureSelector<
   SearchState,
