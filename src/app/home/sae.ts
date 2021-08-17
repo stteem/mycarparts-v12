@@ -2,14 +2,15 @@ import { Component, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SearchService } from '../services/search.service';
 import { CartService } from '../services/cart.service';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 
-import { Store } from '@ngrx/store';
-import { selectSearchCollection } from '../state/search.selectors';
-import { searchParts } from 'app/state/search.action';
+import { Store, select } from '@ngrx/store';
+import { selectSearchCollection, selectSearchKeysState } from '../state/search.selectors';
+import { searchParts, retrieveSearch } from 'app/state/search.action';
 import { SearchState } from 'app/state/search.state';
-import { Items } from 'app/state/search.model';
+
 import { SearchForm } from 'app/shared/searchform';
+import { Result, Items } from 'app/state/search.model';
 
 @Component({
   selector: 'app-home',
@@ -20,7 +21,7 @@ import { SearchForm } from 'app/shared/searchform';
 export class HomeComponent implements OnInit {
   
   searchForm: FormGroup;
-  results: Items[];
+  results;
   searchErrMess: string;
   showForm = true;
   cartItems: any = [];
@@ -29,10 +30,7 @@ export class HomeComponent implements OnInit {
   remove = false;
   isShown: boolean = false;
 
-  search = {
-    city: '',
-    state: ''
-  }
+
 
   @ViewChild('searchform') searchFormDirective;
   formErrors = {
@@ -88,6 +86,7 @@ export class HomeComponent implements OnInit {
         res.forEach((element: string) => {
           this.cartItems.push(element);
         });
+        console.log('cart items 2 ',this.cartItems);
       }
     })
   }
@@ -97,17 +96,12 @@ export class HomeComponent implements OnInit {
       //console.log('result ',res);
       let result = [];
       if (res.result.length > 0) {
-        // The search result returns a matched store object with all store items in the items array.
-        // The for loop takes each mapped store and loops through its items array to find the searched item.
-        // Isn't the most ideal, would have liked to perform that task server side, but that implementation 
-        // would not lend itself.
         res.result.map((item) => {
+          console.log('item ', item)
           for (let i = 0; i < item.items.length; i++) {
             const element = item.items[i];
-            if(Object.is(element.vehicletype.toLowerCase(), res.searchkeys.vehicletype.toLowerCase()) 
-             && Object.is(element.model.toLowerCase(), res.searchkeys.model.toLowerCase())
-              && Object.is(element.year.toLowerCase(), res.searchkeys.year.toLowerCase()) 
-                && Object.is(element.part.toLowerCase(), res.searchkeys.part.toLowerCase())) {
+            if(Object.is(element.vehicletype.toLowerCase(), res.searchkeys.vehicletype.toLowerCase())  && Object.is(element.model.toLowerCase(), res.searchkeys.model.toLowerCase())
+              && Object.is(element.year.toLowerCase(), res.searchkeys.year.toLowerCase()) && Object.is(element.part.toLowerCase(), res.searchkeys.part.toLowerCase())) {
                 
               let newElement = {
                 ...element,
@@ -118,11 +112,12 @@ export class HomeComponent implements OnInit {
                 telnum : item.telnum,
                 storeid : item._id
               } 
-              this.search.city = res.searchkeys.city;
-              this.search.state = res.searchkeys.state;
-
-              result.push(newElement);
-              this.results = result;
+                /*element.price = new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN' }).format(element.price.toFixed(2));*/
+                //console.log('newElement ',newElement);
+                
+                result.push(newElement);
+                this.results = result;
+                console.log('this results ', this.results)
             }
           }
           
@@ -168,9 +163,11 @@ export class HomeComponent implements OnInit {
 
 
   addToCart(item) {
+    console.log('home item ',item)
     this.cartservice.addItemToCart(item)
     .subscribe(res => {
       this.cartItems.push(res);
+      console.log('cart items 1 ',this.cartItems);
     })
   }
 
@@ -180,6 +177,7 @@ export class HomeComponent implements OnInit {
       if (res == 'done') {
         const cart = this.cartItems;
         cart.splice(cart.findIndex(e => e === itemid), 1);
+        console.log('updated cart items ', this.cartItems)
       }
     })
   }
@@ -199,8 +197,16 @@ export class HomeComponent implements OnInit {
       state: this.searchForm.value.state,
       city: this.searchForm.value.city
     };
-
+    console.log('search ',search)
+    //this.search = this.searchForm.value;
     this.store.dispatch(searchParts({search}));
+
+    setTimeout(() => {
+      this.store.select(selectSearchKeysState).subscribe((keys) => {
+        console.log('keys ',keys);
+      })
+    }, 2000);
+    
   }
 }
 

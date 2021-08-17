@@ -55,7 +55,7 @@ export class SidenavComponent implements OnInit, OnDestroy {
   }
 
   openLoginForm() {
-  	this.dialog.open(LoginComponent, {width: '400px', height: '600px'});
+  	this.dialog.open(LoginComponent, {width: '400px', height: '400px'});
   }
 
 }
